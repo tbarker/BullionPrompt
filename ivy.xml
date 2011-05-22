@@ -1,0 +1,17 @@
+<ivy-module version="1.0">
+    <info organisation="com.thomasbarker" module="bullionprompt" />
+    <configurations>
+        <conf name="default" />
+        <conf name="runtime" extends="default" />
+        <conf name="test" extends="compile,runtime" />
+        <conf name="compile" extends="default" />
+    </configurations>
+    <dependencies>
+        <dependency org="junit" name="junit" rev="4+" conf="test->default" />
+        <dependency org="commons-logging" name="commons-logging" rev="1.1.1" conf="test->default" />
+        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.1" conf="default" />
+        <dependency org="org.projectlombok" name="lombok" rev="0.9.3" conf="compile->default" />
+        <dependency org="com.beust" name="jcommander" rev="1.15" conf="default" />
+        <dependency org="com.googlecode.jarjar" name="jarjar" rev="1.1" conf="compile->default" />
+    </dependencies>
+</ivy-module>

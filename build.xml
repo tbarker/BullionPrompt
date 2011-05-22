@@ -1,0 +1,94 @@
+<project
+	name="bullionprompt"
+	basedir="."
+	default="test"
+	xmlns:ivy="antlib:org.apache.ivy.ant"
+>
+
+	<path id="lib.compile">
+		<fileset dir="${basedir}/lib/compile" includes="*.jar" />
+	</path>
+
+	<path id="build.classes">
+		<fileset dir="${basedir}/build/classes" />
+	</path>
+	<path id="build.test">
+		<fileset dir="${basedir}/build/test" />
+	</path>
+
+	<path id="classpath.runtime">
+		<pathelement path="${basedir}/build/classes" />
+		<fileset dir="${basedir}/lib/runtime" includes="**/*.jar" />
+	</path>
+	<path id="classpath.compile">
+		<pathelement path="${basedir}/build/classes" />
+		<fileset dir="${basedir}/lib/runtime" includes="**/*.jar" />
+		<fileset dir="${basedir}/lib/compile" includes="**/*.jar" />
+	</path>
+	<path id="classpath.test">
+		<pathelement path="${basedir}/build/classes" />
+		<pathelement path="${basedir}/build/test" />
+		<fileset dir="${basedir}/lib/test" includes="**/*.jar" />
+	</path>
+
+	<target name="resolve" description="--> retrieve dependencies with ivy">
+		<ivy:retrieve pattern="lib/[conf]/[module]-[artifact]-[revision].[ext]" sync="true" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${basedir}/build" />
+		<delete dir="${basedir}/dist" />
+	</target>
+
+	<target name="compile" description="Compile the code">
+		<mkdir dir="${basedir}/build" />		
+		<mkdir dir="${basedir}/build/classes" />
+		<mkdir dir="${basedir}/build/test" />
+		<javac srcdir="src" destdir="build/classes" classpathref="classpath.compile" source="1.5" includeantruntime="false" />
+		<javac srcdir="${basedir}/test" destdir="build/test" classpathref="classpath.test" source="1.5"	includeantruntime="false" />
+		<copy todir="${build.classes}">
+			<fileset dir="${basedir}/src">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
+		<copy todir="${basedir}/test">
+			<fileset dir="${basedir}/test">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="dist" depends="compile" description="Package a single Jar inc. dependencies">
+		<mkdir dir="${basedir}/dist" />
+		<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="lib/compile/jarjar-jarjar-1.1.jar"/>
+		<jarjar jarfile="dist/bullionprompt.jar" duplicate="preserve">
+	        <fileset dir="build/classes"/>
+			<zipgroupfileset dir="lib/runtime" includes="*.jar" />
+		    <manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+		    	<attribute name="Main-Class" value="com.thomasbarker.bullionprompt.cli.Main" />
+		    </manifest>
+            <rule pattern="com.beust.**" result="com.thomasbarker.bullionprompt.com.beust.@1"/>
+            <rule pattern="org.apache.**" result="com.thomasbarker.bullionprompt.org.apache.@1"/>
+			<keep pattern="com.thomasbarker.bullionprompt.**" />
+			<keep pattern="org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager" />
+		</jarjar>
+	</target>
+
+	<target name="test" depends="compile">
+		<junit haltonfailure="yes">
+			<classpath>
+				<pathelement path="${basedir}/build/classes" />
+				<pathelement path="${basedir}/build/test" />
+				<fileset dir="${basedir}/lib/test" includes="**/*.jar" />
+			</classpath>
+			<formatter type="brief" usefile="false" />
+			<batchtest>
+				<fileset dir="${basedir}/build/test" />
+			</batchtest>
+		</junit>
+	</target>
+
+</project>

@@ -1,0 +1,26 @@
+    <envelope>
+        <message type="ORDERS_A" version="0.4" page="0" pageSize="20">
+            <orders clientId="testtom">
+                <order orderId="1080" clientTransRef="asdf" actionIndicator="B"
+                    securityId="AUXLN" considerationCurrency="USD" quantity="0.001" quantityMatched="0.001"
+                    totalConsideration="12.59" totalCommission="0.11" limit="13500" typeCode="TIL_CANCEL"
+                        orderTime="2005-06-02 14:14:24 UTC" goodUntil="" lastModified="2005-06-02 14:14:25 UTC"
+                        statusCode="DONE"/>
+                <order orderId="1061" clientTransRef="050520115557474" actionIndicator="B"
+                    securityId="AUXNY" considerationCurrency="USD" quantity="0.002" quantityMatched="0.002"
+                    totalConsideration="26.8" totalCommission="0" limit="13400" typeCode="TIL_CANCEL"
+                        orderTime="2005-05-20 15:59:33 UTC" goodUntil="" lastModified="2005-05-20 15:59:45 UTC"
+                        statusCode="DONE"/>
+                <order orderId="1041" clientTransRef="050520120214131" actionIndicator="B"
+                    securityId="AUXNY" considerationCurrency="USD" quantity="0.002" quantityMatched="0.002"
+                    totalConsideration="27" totalCommission="0" limit="13500" typeCode="TIL_CANCEL"
+                        orderTime="2005-05-20 12:02:16 UTC" goodUntil="" lastModified="2005-05-20 12:02:17 UTC"
+                        statusCode="DONE"/>
+                <order orderId="1000" clientTransRef="abc123" actionIndicator="B"
+                    securityId="AUXLN" considerationCurrency="GBP" quantity="0.1" quantityMatched="0.025"
+                    totalConsideration="182.5" totalCommission="1.46" limit="7300" typeCode="TIL_CANCEL"
+                        orderTime="2005-05-19 09:21:21 UTC" goodUntil="" lastModified="2005-05-19 09:21:21 UTC"
+                        statusCode="CANCELLED"/>
+            </orders>
+        </message>
+    </envelope>

@@ -1,0 +1,20 @@
+    <envelope>
+        <message type="CLIENT_BALANCE_A" version="0.2">
+            <clientBalance>
+                <clientPositions>
+                    <clientPosition securityId="AUXLN" available="3.026" total="3.026"
+                        classNarrative="GOLD" totalValuation="40578.66" valuationCurrency="USD"/>
+                    <clientPosition securityId="AUXNY" available="5" total="5"
+                        classNarrative="GOLD" totalValuation="67050" valuationCurrency="USD"/>
+                    <clientPosition securityId="AUXZU" available="3.983" total="3.983"
+                        classNarrative="BULLION" totalValuation="53412.03" valuationCurrency="USD"/>
+                    <clientPosition securityId="EUR" available="39983" total="39983"
+                        classNarrative="CURRENCY" totalValuation="49059.15" valuationCurrency="USD"/>
+                    <clientPosition securityId="GBP" available="24799.04" total="24799.04"
+                        classNarrative="CURRENCY" totalValuation="45084.66" valuationCurrency="USD"/>
+                    <clientPosition securityId="USD" available="49954.9" total="49954.9"
+                        classNarrative="CURRENCY" totalValuation="49954.9" valuationCurrency="USD"/>
+                </clientPositions>
+            </clientBalance>
+        </message>
+    </envelope>

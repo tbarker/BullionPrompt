@@ -1,0 +1,5 @@
+                <order orderId="1080" clientTransRef="asdf" actionIndicator="B"
+                    securityId="AUXLN" considerationCurrency="USD" quantity="0.001" quantityMatched="0.001"
+                    totalConsideration="12.59" totalCommission="0.11" limit="13500" typeCode="TIL_CANCEL"
+                        orderTime="2005-06-02 14:14:24 UTC" goodUntil="" lastModified="2005-06-02 14:14:25 UTC"
+                        statusCode="DONE"/>
