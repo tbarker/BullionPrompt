@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 import com.thomasbarker.bullionprompt.cli.commands.CancelOrderAction;
 import com.thomasbarker.bullionprompt.cli.commands.CheckSpot;
 import com.thomasbarker.bullionprompt.cli.commands.Command;
@@ -43,7 +44,14 @@ public final class Main {
 		Help help = new Help( commander );
 		commander.addCommand( "help", help );
 
-		commander.parse( args );
+		try {
+			commander.parse( args );
+		} catch ( ParameterException pe ) {
+			System.err.println( pe.getLocalizedMessage() );
+			help.usage();
+			siteReference();
+			System.exit( 1 );			
+		}
 
 		if ( null == commander.getParsedCommand() ) {
 			commander.usage();
@@ -57,7 +65,7 @@ public final class Main {
 			System.exit( 1 );
 		}
 
-		Command command  = (Command) commands.get( commander.getParsedCommand() );
+		Command command = (Command) commands.get( commander.getParsedCommand() );
 
 		// Actually do the command
 		try {
