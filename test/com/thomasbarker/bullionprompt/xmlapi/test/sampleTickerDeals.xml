@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<envelope>
+	<message type="TICKER_A" version="0.2">
+		<ticker>
+			<deals>
+				<deal
+						considerationCurrency="EUR"
+						securityId="AGXLN"
+						pricePerUnit="779"
+						dealTime="2012-04-11 12:07:26.0"
+						quantity="1.463"
+					/>
+				<deal
+						considerationCurrency="EUR"
+						securityId="AGXLN"
+						pricePerUnit="780"
+						dealTime="2012-04-11 12:07:26.0"
+						quantity="0.897"
+					/>
+				<deal
+						considerationCurrency="EUR"
+						securityId="AGXLN"
+						pricePerUnit="780"
+						dealTime="2012-04-11 12:07:26.0"
+						quantity="0.282"
+					/>
+				<deal
+						considerationCurrency="EUR"
+						securityId="AGXLN"
+						pricePerUnit="780"
+						dealTime="2012-04-11 12:07:26.0"
+						quantity="0.294"
+					/>
+				<deal
+						considerationCurrency="GBP"
+						securityId="AGXLN"
+						pricePerUnit="644"
+						dealTime="2012-04-11 12:07:15.0"
+						quantity="1"
+					/>
+				</deals>
+		</ticker>	
+	</message>
+</envelope>

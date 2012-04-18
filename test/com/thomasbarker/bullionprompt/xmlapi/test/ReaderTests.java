@@ -15,6 +15,7 @@ import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.thomasbarker.bullionprompt.model.Deal;
 import com.thomasbarker.bullionprompt.model.Order;
 import com.thomasbarker.bullionprompt.model.Position;
 import com.thomasbarker.bullionprompt.model.Price;
@@ -27,6 +28,7 @@ import com.thomasbarker.bullionprompt.xml.documents.OrdersMessage;
 import com.thomasbarker.bullionprompt.xml.documents.PositionsMessage;
 import com.thomasbarker.bullionprompt.xml.documents.PricesMessage;
 import com.thomasbarker.bullionprompt.xml.documents.SpotPriceMessage;
+import com.thomasbarker.bullionprompt.xml.documents.Ticker;
 
 @SuppressWarnings("unchecked")
 public class ReaderTests {
@@ -80,7 +82,12 @@ public class ReaderTests {
     @Test
     public final void testReadExternalSporPrice() {
     	List<Price> p = (List<Price>) readTestFileAsModel( "sampleSilverEuroSpotPrice.xml", SpotPriceMessage.class );
+    }
 
+    @Test
+    public final void testReadTickerDeals() {
+    	List<Deal> d = (List<Deal> ) readTestFileAsModel( "sampleTickerDeals.xml", Ticker.class );
+    	Assert.assertEquals( 77900, d.get( 0 ).getPricePerUnit().intValue() );
     }
 
 	@SneakyThrows( { IOException.class, JAXBException.class } )

@@ -36,6 +36,7 @@ import org.apache.http.message.BasicNameValuePair;
 import com.thomasbarker.bullionprompt.error.BVWireError;
 import com.thomasbarker.bullionprompt.error.BullionVaultErrors;
 import com.thomasbarker.bullionprompt.error.LoginException;
+import com.thomasbarker.bullionprompt.model.Deal;
 import com.thomasbarker.bullionprompt.model.Order;
 import com.thomasbarker.bullionprompt.model.PlaceOrder;
 import com.thomasbarker.bullionprompt.model.Position;
@@ -50,6 +51,7 @@ import com.thomasbarker.bullionprompt.xml.documents.PositionsMessage;
 import com.thomasbarker.bullionprompt.xml.documents.PricesMessage;
 import com.thomasbarker.bullionprompt.xml.documents.SingleOrderMessage;
 import com.thomasbarker.bullionprompt.xml.documents.SpotPriceMessage;
+import com.thomasbarker.bullionprompt.xml.documents.Ticker;
 
 /**
  * Wraps http://www.bullionvault.com/help/?xml_api.html
@@ -187,6 +189,11 @@ public final class BVSession {
 	public Order order( Long orderId ) {
 		HttpGet method = new HttpGet( "https://live.bullionvault.com/secure/view_single_order_xml.do?orderId=" + orderId );
 		return new DoMethodGetObject<Order>( SingleOrderMessage.class ).fetch( method );
+	}
+
+	public List<Deal> tickerDeals() {
+		HttpGet method = new HttpGet( "https://live.bullionvault.com/view_ticker_xml.do" );
+		return new DoMethodGetObject< List<Deal> >( Ticker.class ).fetch( method );
 	}
 
 	@RequiredArgsConstructor
