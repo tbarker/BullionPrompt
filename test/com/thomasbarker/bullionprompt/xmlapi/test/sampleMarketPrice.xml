@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<envelope>
+  <message type="CHART_LINE_A" version="0.4">
+
+    <series_name></series_name>
+    <securityId></securityId>
+    <currency></currency>
+    <interval></interval>
+    <batch></batch>
+
+    <latest_timestamp></latest_timestamp>
+
+    <points>
+    
+    </points>
+  </message>
+</envelope>

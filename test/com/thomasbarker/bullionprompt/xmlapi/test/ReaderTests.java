@@ -26,6 +26,7 @@ import com.thomasbarker.bullionprompt.xml.documents.MessageContainer;
 import com.thomasbarker.bullionprompt.xml.documents.OrdersMessage;
 import com.thomasbarker.bullionprompt.xml.documents.PositionsMessage;
 import com.thomasbarker.bullionprompt.xml.documents.PricesMessage;
+import com.thomasbarker.bullionprompt.xml.documents.SpotPriceMessage;
 
 @SuppressWarnings("unchecked")
 public class ReaderTests {
@@ -74,6 +75,12 @@ public class ReaderTests {
         Assert.assertEquals( "GOLD", p.getNarrative() );
         Assert.assertEquals( 6705000, p.getValuation().longValue() );
         Assert.assertEquals( Currency.getInstance("USD"), p.getValuationCurrency() );
+    }
+
+    @Test
+    public final void testReadExternalSporPrice() {
+    	List<Price> p = (List<Price>) readTestFileAsModel( "sampleSilverEuroSpotPrice.xml", SpotPriceMessage.class );
+
     }
 
 	@SneakyThrows( { IOException.class, JAXBException.class } )

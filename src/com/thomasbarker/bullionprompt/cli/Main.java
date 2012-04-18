@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import com.beust.jcommander.JCommander;
 import com.thomasbarker.bullionprompt.cli.commands.CancelOrderAction;
+import com.thomasbarker.bullionprompt.cli.commands.CheckSpot;
 import com.thomasbarker.bullionprompt.cli.commands.Command;
 import com.thomasbarker.bullionprompt.cli.commands.DisplayAccountBalances;
 import com.thomasbarker.bullionprompt.cli.commands.DisplayMarket;
@@ -29,6 +30,7 @@ public final class Main {
 		commands.put( "orders",		new DisplayOrders() );
 		commands.put( "place",		new PlaceOrderAction() );
 		commands.put( "cancel",		new CancelOrderAction() );
+		commands.put( "spot",		new CheckSpot() );
 
 		JCommander commander = new JCommander();
 		for( Entry<String, Command> commandEntry : commands.entrySet() ) {

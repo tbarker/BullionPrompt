@@ -49,6 +49,7 @@ import com.thomasbarker.bullionprompt.xml.documents.PlaceOrderMessage;
 import com.thomasbarker.bullionprompt.xml.documents.PositionsMessage;
 import com.thomasbarker.bullionprompt.xml.documents.PricesMessage;
 import com.thomasbarker.bullionprompt.xml.documents.SingleOrderMessage;
+import com.thomasbarker.bullionprompt.xml.documents.SpotPriceMessage;
 
 /**
  * Wraps http://www.bullionvault.com/help/?xml_api.html
@@ -255,6 +256,13 @@ public final class BVSession {
 		}
 
 	}
+
+	public Price wholesalePrice( Security security, Currency considerationCurrency ) {
+		HttpGet method = new HttpGet( "http://www.galmarley.com/prices/CHART_LINE/" + security.getSecurityClass().getCode() + "/" + considerationCurrency + "/5/Full" );
+		List<Price> prices = new DoMethodGetObject<List<Price>>( SpotPriceMessage.class ).fetch( method );
+
+		return prices.get( prices.size() - 1 );
+    }
 
 	public static DefaultHttpClient getThreadSafeClient() {
 		DefaultHttpClient client = new DefaultHttpClient();

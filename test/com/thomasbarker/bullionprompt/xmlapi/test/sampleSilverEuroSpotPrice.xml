@@ -1,0 +1,504 @@
+<?xml version="1.0"?>
+
+
+
+
+
+
+
+<envelope>
+  <message type="CHART_LINE_A" version="0.4">
+
+	<series_name>Galmarley_Mid</series_name>
+	<securityId>AGX</securityId>
+	<currency>EUR</currency>
+	<interval>5</interval>
+	<batch>Full</batch>
+
+	<latest_timestamp>20120405125640</latest_timestamp>
+
+	<points>
+	
+		<point>
+			<price>774.91</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>774.90</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.13</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.28</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.30</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.17</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.24</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.23</price>
+		</point>
+	
+		<point>
+			<price>775.36</price>
+		</point>
+	
+		<point>
+			<price>775.46</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.26</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.38</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.47</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>776.63</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.68</price>
+		</point>
+	
+		<point>
+			<price>775.66</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.61</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.59</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>774.42</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.45</price>
+		</point>
+	
+		<point>
+			<price>775.64</price>
+		</point>
+	
+		<point>
+			<price>775.17</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.12</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.12</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.19</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.15</price>
+		</point>
+	
+		<point>
+			<price>775.22</price>
+		</point>
+	
+		<point>
+			<price>775.64</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.54</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.50</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.17</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.33</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.22</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.30</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.41</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.37</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.30</price>
+		</point>
+	
+		<point>
+			<price>775.45</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.25</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>774.83</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.05</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.32</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.04</price>
+		</point>
+	
+		<point>
+			<price>775.05</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.22</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>774.22</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.45</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.27</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.15</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.34</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.37</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.32</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.29</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.49</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>776.02</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>775.79</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+		<point>
+			<price>776.19</price>
+		</point>
+	
+		<point>
+			
+		</point>
+	
+	</points>
+  </message>
+</envelope>

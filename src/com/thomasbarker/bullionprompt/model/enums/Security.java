@@ -5,20 +5,22 @@ import javax.xml.bind.annotation.XmlEnum;
 @XmlEnum
 public enum Security {
 
-    AUXLN( "AUXLN", "London Gold"),
-    AUXZU( "AUXZU", "Zurich Gold"),
-    AGXLN( "AGXLN", "London Silver"),
-    AUXNY( "AUXNY", "New York Gold"),
-    EUR( "EUR", "Euro"),
-    USD( "USD", "US Dollar"),
-    GBP( "GBP", "Sterling");
+    AUXLN( "AUXLN", "London Gold", SecurityClass.GOLD ),
+    AUXZU( "AUXZU", "Zurich Gold", SecurityClass.GOLD ),
+    AGXLN( "AGXLN", "London Silver", SecurityClass.SILVER ),
+    AUXNY( "AUXNY", "New York Gold", SecurityClass.GOLD ),
+    EUR( "EUR", "Euro", SecurityClass.CURRENCY ),
+    USD( "USD", "US Dollar", SecurityClass.CURRENCY ),
+    GBP( "GBP", "Sterling", SecurityClass.CURRENCY );
 
     private final String code;
     private final String description;
+    private final SecurityClass securityClass;
 
-    Security( String code, String desc ) {
+    Security( String code, String desc, SecurityClass securityClass ) {
         this.code = code;
         this.description = desc;
+        this.securityClass = securityClass;
     }
 
     public String getCode() {
@@ -29,4 +31,31 @@ public enum Security {
         return this.description;
     }
 
+    public SecurityClass getSecurityClass() {
+    	return this.securityClass;
+    }
+
+    @XmlEnum
+    public enum SecurityClass {
+
+    	GOLD( "AUX", "Gold bullion "),
+    	SILVER( "AGX", "Silver bullion" ),
+    	CURRENCY( "CSH", "Cash currency" );
+    	
+        private final String code;
+        private final String description;
+
+        SecurityClass( String code, String desc ) {
+            this.code = code;
+            this.description = desc;
+        }
+
+        public String getCode() {
+            return this.code;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
+    }
 }
