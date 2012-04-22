@@ -59,7 +59,15 @@ import com.thomasbarker.bullionprompt.xml.documents.Ticker;
  */
 public final class BVSession {
 
-	private HttpClient client = getThreadSafeClient();
+	private HttpClient client;
+
+	public BVSession() {
+		client = getThreadSafeClient();
+	}
+
+	public BVSession( HttpClient client ) {
+		this.client = client;
+	}
 
 	public void login( String username, String password ) {
 
