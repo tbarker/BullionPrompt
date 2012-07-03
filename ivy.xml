@@ -7,7 +7,7 @@
         <conf name="compile" extends="default" />
     </configurations>
     <dependencies>
-        <dependency org="junit" name="junit" rev="4+" conf="test->default" />
+        <dependency org="junit" name="junit" rev="4.8.2" conf="test->default" />
         <dependency org="commons-logging" name="commons-logging" rev="1.1.1" conf="test->default" />
         <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.1" conf="default" />
         <dependency org="org.projectlombok" name="lombok" rev="0.9.3" conf="compile->default" />
