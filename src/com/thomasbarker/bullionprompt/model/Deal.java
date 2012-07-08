@@ -40,4 +40,61 @@ public class Deal {
 	@XmlJavaTypeAdapter( TimestampDateAdaptor.class )
 	private Date dealTime;
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((considerationCurrency == null) ? 0 : considerationCurrency.hashCode());
+		result = prime * result + ((dealTime == null) ? 0 : dealTime.hashCode());
+		result = prime * result + ((pricePerUnit == null) ? 0 : pricePerUnit.hashCode());
+		result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
+		result = prime * result + ((security == null) ? 0 : security.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals( Object obj ) {
+		if( this == obj ) {
+			return true;
+		}
+		if( obj == null ) {
+			return false;
+		}
+		if( !(obj instanceof Deal) ) {
+			return false;
+		}
+		Deal other = (Deal) obj;
+		if( considerationCurrency == null ) {
+			if( other.considerationCurrency != null ) {
+				return false;
+			}
+		} else if( !considerationCurrency.equals(other.considerationCurrency) ) {
+			return false;
+		}
+		if( dealTime == null ) {
+			if( other.dealTime != null ) {
+				return false;
+			}
+		} else if( !dealTime.equals(other.dealTime) ) {
+			return false;
+		}
+		if( pricePerUnit == null ) {
+			if( other.pricePerUnit != null ) {
+				return false;
+			}
+		} else if( !pricePerUnit.equals(other.pricePerUnit) ) {
+			return false;
+		}
+		if( quantity == null ) {
+			if( other.quantity != null ) {
+				return false;
+			}
+		} else if( !quantity.equals(other.quantity) ) {
+			return false;
+		}
+		if( security != other.security ) {
+			return false;
+		}
+		return true;
+	}
+
 }
