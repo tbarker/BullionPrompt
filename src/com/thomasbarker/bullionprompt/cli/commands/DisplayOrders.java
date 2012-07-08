@@ -36,27 +36,11 @@ public final class DisplayOrders extends AbstractAccountCommand {
 	protected void perform() {
 		if ( null == orderId ) {
 			for( Order order : session.orders() ) {
-				printOrder( order );
+				PrettyPrint.order( order );
 			}
 		} else {
-			printOrder( session.order( orderId ) );
+			PrettyPrint.order( session.order( orderId ) );
 		}
-	}
-
-	private void printOrder( Order order ) {
-		System.out.print( order.getId() +"\t" );
-		System.out.print( dateFormat.format( order.getTime() ) +"\t" );
-		System.out.print( order.getActionIndicator().name() +"\t" );
-		System.out.print( order.getSecurity().getCode() +"\t" );
-		System.out.print( order.getConsiderationCurrency().getCurrencyCode() +"\t" );
-		System.out.print( order.getQuantity() +"\t" );
-		System.out.print( order.getLimit() +"\t" );
-		System.out.print( order.getStatus().getCode() +"\t" );
-		System.out.print( order.getQuantityMatched() +"\t" );
-		if ( null != order.getGoodUntil() ) {
-			System.out.print( dateFormat.format( order.getGoodUntil() ) +"\t" );
-		}
-		System.out.print( "\n" );
 	}
 
 }

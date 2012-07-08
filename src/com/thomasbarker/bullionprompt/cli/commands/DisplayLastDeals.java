@@ -9,15 +9,8 @@ public class DisplayLastDeals extends Command {
 	@Override
 	public void execute() {
 		for( Deal deal : session.tickerDeals() ) {
-			printDealLn( deal );
+			PrettyPrint.deal( deal );
 		}
 	}
 
-	protected static void printDealLn( Deal deal ) {
-		System.out.print( deal.getSecurity() + "\t" );
-		System.out.print( deal.getConsiderationCurrency() + "\t" );
-		System.out.print( deal.getDealTime() + "\t" );
-		System.out.print( deal.getPricePerUnit() + "\t" );
-		System.out.print( deal.getQuantity() + "\n" );
-	}
 }

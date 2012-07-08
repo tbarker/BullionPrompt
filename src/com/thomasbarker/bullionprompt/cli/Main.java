@@ -12,10 +12,12 @@ import com.thomasbarker.bullionprompt.cli.commands.Command;
 import com.thomasbarker.bullionprompt.cli.commands.DisplayAccountBalances;
 import com.thomasbarker.bullionprompt.cli.commands.DisplayLastDeals;
 import com.thomasbarker.bullionprompt.cli.commands.DisplayMarket;
+import com.thomasbarker.bullionprompt.cli.commands.DisplayMarketDepth;
 import com.thomasbarker.bullionprompt.cli.commands.DisplayOrders;
 import com.thomasbarker.bullionprompt.cli.commands.Help;
 import com.thomasbarker.bullionprompt.cli.commands.PlaceOrderAction;
 import com.thomasbarker.bullionprompt.cli.commands.TailMarket;
+import com.thomasbarker.bullionprompt.cli.commands.WatchAction;
 import com.thomasbarker.bullionprompt.error.BVWireError;
 import com.thomasbarker.bullionprompt.error.BullionVaultErrors;
 import com.thomasbarker.bullionprompt.error.LoginException;
@@ -34,6 +36,8 @@ public final class Main {
 		commands.put( "cancel",		new CancelOrderAction() );
 		commands.put( "spot",		new CheckSpot() );
 		commands.put( "deals",		new DisplayLastDeals() );
+		commands.put( "depth",		new DisplayMarketDepth() );
+		commands.put( "watch",		new WatchAction() );
 
 		JCommander commander = new JCommander();
 		for( Entry<String, Command> commandEntry : commands.entrySet() ) {

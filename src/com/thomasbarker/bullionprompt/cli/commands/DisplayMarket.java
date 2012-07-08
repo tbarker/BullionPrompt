@@ -8,7 +8,7 @@ public final class DisplayMarket extends AbstractMarketCommand {
 
 	public void execute() {
         for( Price price : session.markets( considerationCurrency, security, quantity, marketWidth ) ) {
-        	printPriceLn( price );
+        	PrettyPrint.price( price );
         }
 	}
 

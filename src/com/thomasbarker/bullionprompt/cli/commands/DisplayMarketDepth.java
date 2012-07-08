@@ -5,12 +5,14 @@ import java.util.Currency;
 import lombok.Getter;
 
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 import com.thomasbarker.bullionprompt.cli.converter.CurrencyParameterConverter;
 import com.thomasbarker.bullionprompt.cli.converter.SecurityParameterConverter;
 import com.thomasbarker.bullionprompt.model.Price;
 import com.thomasbarker.bullionprompt.model.enums.Security;
 
-public abstract class AbstractMarketCommand extends Command {
+@Parameters( commandDescription = "Show the market pricing depth." )
+public final class DisplayMarketDepth extends Command {
 
 	@Parameter( names = { "--currency", "-c" }, required = false, converter = CurrencyParameterConverter.class )
 	@Getter Currency considerationCurrency;
@@ -18,10 +20,11 @@ public abstract class AbstractMarketCommand extends Command {
 	@Parameter( names = { "--security", "-s" }, required = false, converter = SecurityParameterConverter.class )
 	@Getter Security security;
 
-	@Parameter( names = { "--quantity", "-q" }, required = false, description = "In grams" )
-	@Getter Long quantity;
-
-	@Parameter( names = { "--width", "-w" }, description = "Maximum number of bids and offers returned for each market.", required = false )
-	@Getter Integer marketWidth;
+	@Override
+	public void execute() {
+        for( Price price : session.marketDepth( security, considerationCurrency ) ) {
+        	PrettyPrint.price( price );
+        }
+	}
 
 }
