@@ -33,6 +33,7 @@ import com.thomasbarker.bullionprompt.xml.documents.MessageContainer;
 @SuppressWarnings("unchecked")
 public class DoMethodGetObject<T> {
 
+	@SuppressWarnings( "rawtypes" )
 	private final Class modelClass;
 
 	public T fetch( HttpClient client, HttpPost method, List<NameValuePair> params ) {

@@ -1,6 +1,7 @@
 package com.thomasbarker.bullionprompt.xmlapi;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -8,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
+
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -46,6 +50,7 @@ import com.thomasbarker.bullionprompt.xml.documents.Ticker;
 public final class BVSession {
 
 	private HttpClient client;
+	private boolean isLoggedIn = false;
 
 	public BVSession() {
 		client = HttpClients.getThreadSafeClient();
@@ -87,6 +92,12 @@ public final class BVSession {
 		if ( 200 != statusCode ) {
 			throw new LoginException();
 		}
+
+		isLoggedIn = true;
+	}
+
+	public boolean isLoggedIn() {
+		return this.isLoggedIn;
 	}
 
 	public List<Position> balance() {
@@ -190,11 +201,55 @@ public final class BVSession {
 		return new DoMethodGetObject< List<Deal> >( Ticker.class ).fetch( client, method );
 	}
 
+	@SneakyThrows( { IOException.class, URISyntaxException.class } )
+	public List<Price> marketDepth( Security security, Currency considerationCurrency ) {
+
+		// Construct GET request
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add( new BasicNameValuePair( "considerationCurrency", considerationCurrency.getCurrencyCode() ) );
+		params.add( new BasicNameValuePair( "securityId", security.getCode() ) );
+		params.add( new BasicNameValuePair( "marketWidth", "26" ) );
+		params.add( new BasicNameValuePair( "priceInterval", "0" ) );
+		URI uri = URIUtils.createURI(
+			"http", "www.bullionvault.com", -1, "/view_market_depth.do",
+			URLEncodedUtils.format( params, "UTF-8"), null
+		);
+
+		// Make HTTP request
+		HttpGet method = new HttpGet( uri );
+		HttpResponse response = client.execute( method );
+		@Cleanup InputStream stream = response.getEntity().getContent();
+		String document = new java.util.Scanner( stream ).useDelimiter("\\A").next();
+
+		List<Price> prices = MarketDepth.parse( document );
+		return prices;
+	}
+
+	public List<Price> wholesalePrice() {
+		List<Price> prices = new ArrayList<Price>();
+
+		for ( Security security : Security.values() ) {
+			for ( Currency considerationCurrency : TradingCurrencies.values() ) {
+				Price price = this.wholesalePrice( security, considerationCurrency );
+				if ( null != price ) {
+					prices.add( price );
+				}
+			}
+		}
+
+		return prices;
+	}
+
 	public Price wholesalePrice( Security security, Currency considerationCurrency ) {
 		HttpGet method = new HttpGet( "http://www.galmarley.com/prices/CHART_LINE/" + security.getSecurityClass().getCode() + "/" + considerationCurrency + "/5/Full" );
 		List<Price> prices = new DoMethodGetObject<List<Price>>( SpotPriceMessage.class ).fetch( client, method );
 
-		return prices.get( prices.size() - 1 );
+		Price price = prices.isEmpty() ? null : prices.get( prices.size() - 1 );
+		if ( null != price ) {
+			price.setConsiderationCurrency( considerationCurrency );
+			price.setSecurity( security );
+		}
+		return price;
     }
 
 }
