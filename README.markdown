@@ -8,18 +8,21 @@ Usage
 ------
 
 From the command-line
-
-    Usage: <main class> [options] [command] [command options]
-      Options:
-      Commands:
-        balance   Display account property balances and valuations.
-        market    Show the markets prices.
-        cancel    Cancel an existing market order.
-        orders    Display your (by default only active) orders.  Or a single
-                  given order.
-        place     Place a live market order.
-        tail      Show changes to the markets.
-        help      
+Ts-Sleek:BullionPrompt thomasbarker$ java -jar dist/bullionprompt.jar 
+Usage: <main class> [options] [command] [command options]
+  Options:
+  Commands:
+    balance   Display account property balances and valuations.
+    market    Show the markets prices.
+    watch     null
+    cancel    Cancel an existing market order.
+    orders    Display your (by default only active) orders.  Or a single given order.
+    place     Place a live market order.
+    deals     Display the last deals on the market.
+    tail      Show changes to the markets.
+    depth     Show the market pricing depth.
+    spot      Check the spot price.
+    help      
 
 See http://www.bullionvault.com/help/?xml_api.html for more.
 
