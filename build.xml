@@ -40,21 +40,22 @@
 		<delete dir="${basedir}/dist" />
 	</target>
 
-	<target name="compile" description="Compile the code">
+	<target name="compile" depends="resolve" description="Compile the code">
 		<mkdir dir="${basedir}/build" />		
 		<mkdir dir="${basedir}/build/classes" />
 		<mkdir dir="${basedir}/build/test" />
 		<javac srcdir="src" destdir="build/classes" classpathref="classpath.compile" source="1.5" includeantruntime="false" />
 		<javac srcdir="${basedir}/test" destdir="build/test" classpathref="classpath.test" source="1.5"	includeantruntime="false" />
-		<copy todir="${build.classes}">
+		<copy todir="${basedir}/build/classes">
 			<fileset dir="${basedir}/src">
 				<include name="**/*.xml" />
 				<include name="**/*.properties" />
 			</fileset>
 		</copy>
-		<copy todir="${basedir}/test">
+		<copy todir="${basedir}/build/classes">
 			<fileset dir="${basedir}/test">
 				<include name="**/*.xml" />
+				<include name="**/*.html" />
 				<include name="**/*.properties" />
 			</fileset>
 		</copy>
