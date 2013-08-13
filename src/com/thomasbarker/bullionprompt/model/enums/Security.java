@@ -5,10 +5,14 @@ import javax.xml.bind.annotation.XmlEnum;
 @XmlEnum
 public enum Security {
 
-    AUXLN( "AUXLN", "London Gold", SecurityClass.GOLD ),
     AUXZU( "AUXZU", "Zurich Gold", SecurityClass.GOLD ),
-    AGXLN( "AGXLN", "London Silver", SecurityClass.SILVER ),
+    AUXLN( "AUXLN", "London Gold", SecurityClass.GOLD ),
     AUXNY( "AUXNY", "New York Gold", SecurityClass.GOLD ),
+    AUXZU( "AUXTR", "Toronto Gold", SecurityClass.GOLD ),
+    AUXZU( "AUXSG", "Singapore Gold", SecurityClass.GOLD ),
+    AGXLN( "AGXSU", "Zurich Silver", SecurityClass.SILVER ),
+    AGXLN( "AGXLN", "London Silver", SecurityClass.SILVER ),
+    AGXLN( "AGXLG", "Singapore Silver", SecurityClass.SILVER ),
     EUR( "EUR", "Euro", SecurityClass.CURRENCY ),
     USD( "USD", "US Dollar", SecurityClass.CURRENCY ),
     GBP( "GBP", "Sterling", SecurityClass.CURRENCY );
