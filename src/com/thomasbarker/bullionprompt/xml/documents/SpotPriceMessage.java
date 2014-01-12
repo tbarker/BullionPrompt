@@ -73,7 +73,6 @@ public final class SpotPriceMessage
 		return prices;
 	}
 
-
 	@XmlType
 	private static class Point {
 

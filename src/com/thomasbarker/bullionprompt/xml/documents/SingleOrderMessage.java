@@ -1,13 +1,11 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
-import java.math.BigDecimal;
+import com.thomasbarker.bullionprompt.model.Order;
+import lombok.Getter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Getter;
-
-import com.thomasbarker.bullionprompt.model.Order;
+import java.math.BigDecimal;
 
 @XmlRootElement( name = "envelope" )
 public final class SingleOrderMessage
@@ -30,4 +28,13 @@ public final class SingleOrderMessage
 		@Getter protected BigDecimal requiredVersion = new BigDecimal( "0.1" );
 	}
 
+	@XmlElement( name = "cancellable" )
+	// This ought to be a Boolean but JAXB would not co-operate
+	@Getter private String cancellable;
+
+	@Override
+	protected final void fixUp()
+	{
+		getMessage().getOrder().setCancellable( Boolean.valueOf( this.cancellable ) );
+	}
 }

@@ -1,10 +1,10 @@
 package com.thomasbarker.bullionprompt.cli.commands;
 
-import java.text.SimpleDateFormat;
-
-import lombok.Getter;
 import com.beust.jcommander.Parameter;
 import com.thomasbarker.bullionprompt.xmlapi.BVSession;
+import lombok.Getter;
+
+import java.text.SimpleDateFormat;
 
 public abstract class Command {
 
@@ -19,10 +19,10 @@ public abstract class Command {
 
 		// Enable debug wire logging if requested
 		// These system parameters must be set before initialising the session
-		if ( isWire() ) {			
+		if ( isWire() ) {
 			System.setProperty( "org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog" );
 			System.setProperty( "org.apache.commons.logging.simplelog.showdatetime", "true" );
-			System.setProperty( "org.apache.commons.logging.simplelog.log.org.apache.http.wire", "DEBUG" );
+			System.setProperty( "org.apache.commons.logging.simplelog.log.org.apache.http", "DEBUG" );
 		}
 
 		session = new BVSession();

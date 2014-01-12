@@ -1,26 +1,15 @@
 package com.thomasbarker.bullionprompt.cli;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
-import com.thomasbarker.bullionprompt.cli.commands.CancelOrderAction;
-import com.thomasbarker.bullionprompt.cli.commands.CheckSpot;
-import com.thomasbarker.bullionprompt.cli.commands.Command;
-import com.thomasbarker.bullionprompt.cli.commands.DisplayAccountBalances;
-import com.thomasbarker.bullionprompt.cli.commands.DisplayLastDeals;
-import com.thomasbarker.bullionprompt.cli.commands.DisplayMarket;
-import com.thomasbarker.bullionprompt.cli.commands.DisplayMarketDepth;
-import com.thomasbarker.bullionprompt.cli.commands.DisplayOrders;
-import com.thomasbarker.bullionprompt.cli.commands.Help;
-import com.thomasbarker.bullionprompt.cli.commands.PlaceOrderAction;
-import com.thomasbarker.bullionprompt.cli.commands.TailMarket;
-import com.thomasbarker.bullionprompt.cli.commands.WatchAction;
+import com.thomasbarker.bullionprompt.cli.commands.*;
 import com.thomasbarker.bullionprompt.error.BVWireError;
 import com.thomasbarker.bullionprompt.error.BullionVaultErrors;
 import com.thomasbarker.bullionprompt.error.LoginException;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public final class Main {
 
@@ -33,6 +22,7 @@ public final class Main {
 		commands.put( "balance",	new DisplayAccountBalances() );
 		commands.put( "orders",		new DisplayOrders() );
 		commands.put( "place",		new PlaceOrderAction() );
+		commands.put( "pending",	new DisplayPendingSettlements() );
 		commands.put( "cancel",		new CancelOrderAction() );
 		commands.put( "spot",		new CheckSpot() );
 		commands.put( "deals",		new DisplayLastDeals() );

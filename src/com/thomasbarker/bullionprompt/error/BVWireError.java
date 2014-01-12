@@ -1,10 +1,11 @@
 package com.thomasbarker.bullionprompt.error;
 
-import java.io.IOException;
+import org.apache.http.client.ClientProtocolException;
+import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
-
-import org.apache.http.client.ClientProtocolException;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 public final class BVWireError extends RuntimeException {
 
@@ -24,4 +25,11 @@ public final class BVWireError extends RuntimeException {
 		super( ioe );
 	}
 
+	public BVWireError( ParserConfigurationException pce ) {
+		super( pce );
+	}
+
+	public BVWireError( SAXException se ) {
+		super( se );
+	}
 }

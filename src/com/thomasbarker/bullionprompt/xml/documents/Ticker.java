@@ -1,16 +1,14 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import com.thomasbarker.bullionprompt.model.Deal;
+import lombok.Getter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Getter;
-
-import com.thomasbarker.bullionprompt.model.Deal;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement( name = "envelope" )
 public final class Ticker
@@ -27,7 +25,7 @@ public final class Ticker
 	{
 		@Getter protected String requiredType = "TICKER_A";
 
-		@Getter protected BigDecimal getRequiredVersion = new BigDecimal( "0.2" );
+		@Getter protected BigDecimal requiredVersion = new BigDecimal( "0.2" );
 
 		@XmlElement( name = "ticker" )
 		@Getter protected InnerTicker ticker;
@@ -39,4 +37,5 @@ public final class Ticker
 		@XmlElement( name = "deal" )
 		@Getter protected List<Deal> deals = new ArrayList<Deal>();
 	}
+
 }

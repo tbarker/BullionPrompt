@@ -1,19 +1,10 @@
 package com.thomasbarker.bullionprompt.network;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
+import com.thomasbarker.bullionprompt.error.BVWireError;
+import com.thomasbarker.bullionprompt.error.BullionVaultErrors;
+import com.thomasbarker.bullionprompt.xml.documents.MessageContainer;
 import lombok.Cleanup;
 import lombok.RequiredArgsConstructor;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -24,10 +15,21 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
-import com.thomasbarker.bullionprompt.error.BVWireError;
-import com.thomasbarker.bullionprompt.error.BullionVaultErrors;
-import com.thomasbarker.bullionprompt.xml.documents.MessageContainer;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @SuppressWarnings("unchecked")
@@ -64,24 +66,47 @@ public class DoMethodGetObject<T> {
 	}
 
 	public T fetch( HttpClient client, HttpUriRequest method ) {
+		return fetch( fetchXML( client, method ) );
+	}
 
-		T values = null;
+	public T fetch( Document document ) {
+
+		// Map to object
+		JAXBContext context = null;
+		Unmarshaller unmarshaller = null;
+		MessageContainer message = null;
+		try {
+			context = JAXBContext.newInstance( modelClass );
+			unmarshaller = context.createUnmarshaller();
+			unmarshaller.unmarshal( document );
+			message = ( (MessageContainer) unmarshaller.unmarshal( document.getFirstChild() ) );
+		} catch ( JAXBException je ) {
+			throw new BVWireError( je );
+		}
+
+		// Return contents
+		if ( message.getErrors().isEmpty() ) {
+			return (T) message.getContent();
+		} else {
+			throw new BullionVaultErrors( message.getErrors() );
+		}
+
+	}
+
+	public static Document fetchXML( HttpClient client, HttpUriRequest method ) {
+
 		try {
 
 			// Read the response body.
 			HttpResponse response = client.execute( method );
 			@Cleanup InputStream stream = response.getEntity().getContent();
 
-			// Process
-			JAXBContext context = JAXBContext.newInstance( modelClass );
-			Unmarshaller unmarshaller = context.createUnmarshaller();
-			MessageContainer message = ( (MessageContainer) unmarshaller.unmarshal( stream ) );
+			// Parse to XML
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document document =  dBuilder.parse( stream );
 
-			if ( message.getErrors().isEmpty() ) {
-				values = (T) message.getContent();
-			} else {
-				throw new BullionVaultErrors( message.getErrors() );
-			}
+			return document;
 
 		} catch ( ClientProtocolException cpee ) {
 			throw new BVWireError( cpee );
@@ -89,11 +114,11 @@ public class DoMethodGetObject<T> {
 			throw new BVWireError( ioe );
 		} catch ( IllegalStateException ise ) {
 			throw new BVWireError( ise );
-		} catch ( JAXBException je ) {
-			throw new BVWireError( je );
+		} catch ( ParserConfigurationException pce ) {
+			throw new BVWireError( pce );
+		} catch ( SAXException se ) {
+			throw new BVWireError( se );
 		}
 
-		return values;
 	}
-
 }

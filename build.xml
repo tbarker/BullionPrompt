@@ -41,7 +41,7 @@
 	</target>
 
 	<target name="compile" depends="resolve" description="Compile the code">
-		<mkdir dir="${basedir}/build" />		
+		<mkdir dir="${basedir}/build" />
 		<mkdir dir="${basedir}/build/classes" />
 		<mkdir dir="${basedir}/build/test" />
 		<javac srcdir="src" destdir="build/classes" classpathref="classpath.compile" source="1.5" includeantruntime="false" />

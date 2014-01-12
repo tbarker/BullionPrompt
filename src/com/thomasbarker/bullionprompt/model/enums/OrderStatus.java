@@ -13,7 +13,9 @@ public enum OrderStatus {
 	NOFUNDS( "NOFUNDS", "Order was rejected due to insufficient funds."),
 	BADLIMIT( "BADLIMIT", "Order was rejected due to limit too high/low."),
 	SILVER_RESTRICTED( "SILVER_RESTRICTED", "This account may not trade silver." ),
-	QUEUED( "QUEUED", "Order is queued awaiting processing.");
+	QUEUED( "QUEUED", "Order is queued awaiting processing."),
+	TO_BE_SETTLED( "TO_BE_SETTLED", "Order is awaiting settlement." ),
+	AGIP_ENABLED( "AGIP_ENABLED", "AGIP is enabled on this account." );
 
 	private final String code;
 	private final String description;

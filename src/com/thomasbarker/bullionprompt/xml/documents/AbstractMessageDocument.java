@@ -1,19 +1,13 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Data;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Data;
+import javax.xml.bind.annotation.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType( XmlAccessType.FIELD )
 @Data
@@ -61,5 +55,10 @@ public abstract class AbstractMessageDocument<T>
 		}
 
 		getErrors().addAll( getMessage().getErrors() );
+
+		fixUp();
 	}
+
+	// Allow safe extension of afterUnmarshal
+	protected void fixUp() { ; }
 }

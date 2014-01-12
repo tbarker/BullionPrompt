@@ -1,14 +1,12 @@
 package com.thomasbarker.bullionprompt.xmlapi;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
+import com.thomasbarker.bullionprompt.error.BVWireError;
+import com.thomasbarker.bullionprompt.error.LoginException;
+import com.thomasbarker.bullionprompt.model.*;
+import com.thomasbarker.bullionprompt.model.enums.*;
+import com.thomasbarker.bullionprompt.network.DoMethodGetObject;
+import com.thomasbarker.bullionprompt.network.HttpClients;
+import com.thomasbarker.bullionprompt.xml.documents.*;
 
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -22,28 +20,17 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
+import org.w3c.dom.Document;
 
-import com.thomasbarker.bullionprompt.error.BVWireError;
-import com.thomasbarker.bullionprompt.error.LoginException;
-import com.thomasbarker.bullionprompt.model.Deal;
-import com.thomasbarker.bullionprompt.model.Order;
-import com.thomasbarker.bullionprompt.model.PlaceOrder;
-import com.thomasbarker.bullionprompt.model.Position;
-import com.thomasbarker.bullionprompt.model.Price;
-import com.thomasbarker.bullionprompt.model.enums.OrderStatus;
-import com.thomasbarker.bullionprompt.model.enums.OrderType;
-import com.thomasbarker.bullionprompt.model.enums.Security;
-import com.thomasbarker.bullionprompt.model.enums.TradingCurrencies;
-import com.thomasbarker.bullionprompt.network.DoMethodGetObject;
-import com.thomasbarker.bullionprompt.network.HttpClients;
-import com.thomasbarker.bullionprompt.xml.documents.MarketDepth;
-import com.thomasbarker.bullionprompt.xml.documents.OrdersMessage;
-import com.thomasbarker.bullionprompt.xml.documents.PlaceOrderMessage;
-import com.thomasbarker.bullionprompt.xml.documents.PositionsMessage;
-import com.thomasbarker.bullionprompt.xml.documents.PricesMessage;
-import com.thomasbarker.bullionprompt.xml.documents.SingleOrderMessage;
-import com.thomasbarker.bullionprompt.xml.documents.SpotPriceMessage;
-import com.thomasbarker.bullionprompt.xml.documents.Ticker;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.List;
 
 /**
  * Wraps http://www.bullionvault.com/help/?xml_api.html
@@ -51,15 +38,23 @@ import com.thomasbarker.bullionprompt.xml.documents.Ticker;
  */
 public final class BVSession {
 
+	private static String LIVE_BV_DOMAIN = "www.bullionvault.com";
+
 	private HttpClient client;
+	private final String domain;
 	private boolean isLoggedIn = false;
 
 	public BVSession() {
-		client = HttpClients.getThreadSafeClient();
+		this( LIVE_BV_DOMAIN );
 	}
 
-	public BVSession( HttpClient client ) {
+	public BVSession( String domain ) {
+		this( HttpClients.getThreadSafeClient(), domain );
+	}
+
+	public BVSession( HttpClient client, String domain ) {
 		this.client = client;
+		this.domain = domain;
 	}
 
 	public void login( String username, String password ) {
@@ -72,7 +67,7 @@ public final class BVSession {
 		int statusCode = 0;
 		try {
 			URI uri = URIUtils.createURI(
-					"https", "live.bullionvault.com", -1, "/secure/j_security_check", 
+					"https", domain, -1, "/secure/j_security_check",
 					URLEncodedUtils.format( loginParams, "UTF-8"), null
 				);
 
@@ -103,8 +98,24 @@ public final class BVSession {
 	}
 
 	public List<Position> balance() {
-		HttpGet method = new HttpGet( "https://live.bullionvault.com/secure/view_balance_xml.do" );
+		HttpGet method = makeBVApiHttpGet( "view_balance_xml.do?simple=true" );
 		return new DoMethodGetObject< List<Position> >( PositionsMessage.class ).fetch( client, method );
+	}
+
+	public List<PendingSettlement> pendingSettlements() {
+		HttpGet method = makeBVApiHttpGet( "view_balance_xml.do?simple=false" );
+		return new DoMethodGetObject< List<PendingSettlement> >( PendingSettlementMessage.class ).fetch( client, method );
+	}
+
+	public PositionsAndPendingSettlements positionsAndPendingSettlements() {
+
+		HttpGet method = makeBVApiHttpGet( "view_balance_xml.do?simple=false" );
+		Document document = DoMethodGetObject.fetchXML( client, method );
+
+		List<Position> positions = new DoMethodGetObject< List<Position> >( PositionsMessage.class ).fetch( document );
+		List<PendingSettlement> pendingSettlements = new DoMethodGetObject< List<PendingSettlement> >( PendingSettlementMessage.class ).fetch( document );
+
+		return new PositionsAndPendingSettlements( positions, pendingSettlements );
 	}
 
 	public List<Order> orders() {
@@ -127,7 +138,7 @@ public final class BVSession {
 			params.add( new BasicNameValuePair( "status", status.getCode() ) );
 		}
 
-		HttpGet method = new HttpGet( "https://live.bullionvault.com/secure/view_orders_xml.do" );
+		HttpGet method = makeBVApiHttpGet( "view_orders_xml.do" );
 		return new DoMethodGetObject< List<Order> >( OrdersMessage.class ).fetch( client, method );
 	}
 
@@ -155,7 +166,7 @@ public final class BVSession {
 			params.add( new BasicNameValuePair( "marketWidth", marketWidth.toString() ) );
 		}
 
-		return new DoMethodGetObject< List<Price> >( PricesMessage.class ).fetch( client, "https", "live.bullionvault.com", "/view_market_xml.do", params );
+		return new DoMethodGetObject< List<Price> >( PricesMessage.class ).fetch( client, "https", domain, "/view_market_xml.do", params );
 	}
 
 	public Order placeOrder( PlaceOrder order ) {
@@ -177,7 +188,7 @@ public final class BVSession {
 		}
 		params.add( new BasicNameValuePair( "confirmed", "true" ) );
 
-		HttpPost method = new HttpPost( "https://live.bullionvault.com/secure/place_order_xml.do" );
+		HttpPost method = new HttpPost( String.format( "https://%s/secure/api/v2/place_order_xml.do", domain ) );
 		return new DoMethodGetObject<Order>( PlaceOrderMessage.class ).fetch( client, method, params );
 	}
 
@@ -213,7 +224,7 @@ public final class BVSession {
 		params.add( new BasicNameValuePair( "marketWidth", "26" ) );
 		params.add( new BasicNameValuePair( "priceInterval", "0" ) );
 		URI uri = URIUtils.createURI(
-			"http", "www.bullionvault.com", -1, "/view_market_depth.do",
+			"http", domain, -1, "/view_market_depth.do",
 			URLEncodedUtils.format( params, "UTF-8"), null
 		);
 
@@ -230,9 +241,16 @@ public final class BVSession {
 	public List<Price> wholesalePrice() {
 		List<Price> prices = new ArrayList<Price>();
 
-		for ( Security security : Security.values() ) {
+		for ( Security security : Security.bullionValues() ) {
 			for ( Currency considerationCurrency : TradingCurrencies.values() ) {
+
+				try {
+					Thread.sleep( 600 ); // Do not hammer chart
+				} catch ( InterruptedException e ) {
+					; // Actually we don't usually mind waking up early
+				}
 				Price price = this.wholesalePrice( security, considerationCurrency );
+
 				if ( null != price ) {
 					prices.add( price );
 				}
@@ -254,4 +272,7 @@ public final class BVSession {
 		return price;
     }
 
+	private HttpGet makeBVApiHttpGet( String url ) {
+		return new HttpGet( String.format( "https://%s/secure/api/v2/%s", domain, url ) );
+	}
 }

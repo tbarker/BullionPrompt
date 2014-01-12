@@ -1,14 +1,15 @@
 package com.thomasbarker.bullionprompt.cli.commands;
 
-import java.util.List;
-
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.Parameter;
+import java.util.List;
 
 @RequiredArgsConstructor
+@Parameters( commandDescription = "Display this message" )
 public final class Help {
 
 	@Getter final JCommander commander;

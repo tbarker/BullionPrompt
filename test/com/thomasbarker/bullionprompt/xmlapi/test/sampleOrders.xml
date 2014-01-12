@@ -1,26 +1,190 @@
-    <envelope>
-        <message type="ORDERS_A" version="0.4" page="0" pageSize="20">
-            <orders clientId="testtom">
-                <order orderId="1080" clientTransRef="asdf" actionIndicator="B"
-                    securityId="AUXLN" considerationCurrency="USD" quantity="0.001" quantityMatched="0.001"
-                    totalConsideration="12.59" totalCommission="0.11" limit="13500" typeCode="TIL_CANCEL"
-                        orderTime="2005-06-02 14:14:24 UTC" goodUntil="" lastModified="2005-06-02 14:14:25 UTC"
-                        statusCode="DONE"/>
-                <order orderId="1061" clientTransRef="050520115557474" actionIndicator="B"
-                    securityId="AUXNY" considerationCurrency="USD" quantity="0.002" quantityMatched="0.002"
-                    totalConsideration="26.8" totalCommission="0" limit="13400" typeCode="TIL_CANCEL"
-                        orderTime="2005-05-20 15:59:33 UTC" goodUntil="" lastModified="2005-05-20 15:59:45 UTC"
-                        statusCode="DONE"/>
-                <order orderId="1041" clientTransRef="050520120214131" actionIndicator="B"
-                    securityId="AUXNY" considerationCurrency="USD" quantity="0.002" quantityMatched="0.002"
-                    totalConsideration="27" totalCommission="0" limit="13500" typeCode="TIL_CANCEL"
-                        orderTime="2005-05-20 12:02:16 UTC" goodUntil="" lastModified="2005-05-20 12:02:17 UTC"
-                        statusCode="DONE"/>
-                <order orderId="1000" clientTransRef="abc123" actionIndicator="B"
-                    securityId="AUXLN" considerationCurrency="GBP" quantity="0.1" quantityMatched="0.025"
-                    totalConsideration="182.5" totalCommission="1.46" limit="7300" typeCode="TIL_CANCEL"
-                        orderTime="2005-05-19 09:21:21 UTC" goodUntil="" lastModified="2005-05-19 09:21:21 UTC"
-                        statusCode="CANCELLED"/>
-            </orders>
-        </message>
-    </envelope>
+<?xml version="1.0"?>
+<envelope>
+	<message
+				type="ORDERS_A"
+				version="0.4"
+				page="0"
+				pageSize="20"
+			>
+				<orders
+					clientId="TESTTOM"
+				>
+					<order
+	orderId="153562094"
+	clientTransRef="120909094639222"
+	actionIndicator="B"
+	securityId="AGXLN"
+	considerationCurrency="USD"
+	quantity="0.002"
+	quantityMatched="0.002"
+	totalConsideration="2.17"
+	totalCommission="0.02"
+	limit="1086"
+	typeCode="IMMEDIATE"
+	orderTime="2012-09-09 08:46:58 UTC"
+	goodUntil=""
+	lastModified="2012-09-09 08:46:58 UTC"
+	
+	statusCode="DONE"
+	
+	tradeType="ORDER_BOARD_TRADE"
+	orderValue="2.172"
+	
+/>
+<order
+	orderId="139721159"
+	clientTransRef="120209000332633"
+	actionIndicator="B"
+	securityId="AGXLN"
+	considerationCurrency="USD"
+	quantity="0.001"
+	quantityMatched="0.001"
+	totalConsideration="1.1"
+	totalCommission="0.01"
+	limit="1104"
+	typeCode="TIL_CANCEL"
+	orderTime="2012-02-09 00:03:51 UTC"
+	goodUntil=""
+	lastModified="2012-02-09 00:03:51 UTC"
+	
+	statusCode="DONE"
+	
+	tradeType="ORDER_BOARD_TRADE"
+	orderValue="1.104"
+	
+/>
+<order
+	orderId="139721091"
+	clientTransRef="120208235927300"
+	actionIndicator="S"
+	securityId="AGXLN"
+	considerationCurrency="EUR"
+	quantity="0.002"
+	quantityMatched="0.002"
+	totalConsideration="1.66"
+	totalCommission="0.02"
+	limit="826"
+	typeCode="FILL_KILL"
+	orderTime="2012-02-09 00:03:18 UTC"
+	goodUntil=""
+	lastModified="2012-02-09 00:03:18 UTC"
+	
+	statusCode="DONE"
+	
+	tradeType="ORDER_BOARD_TRADE"
+	orderValue="1.652"
+	
+/>
+<order
+	orderId="139720842"
+	clientTransRef="120208235640461"
+	actionIndicator="B"
+	securityId="AGXLN"
+	considerationCurrency="USD"
+	quantity="0.001"
+	quantityMatched="0.001"
+	totalConsideration="1.1"
+	totalCommission="0.01"
+	limit="1103"
+	typeCode="TIL_CANCEL"
+	orderTime="2012-02-08 23:56:49 UTC"
+	goodUntil=""
+	lastModified="2012-02-08 23:56:49 UTC"
+	
+	statusCode="DONE"
+	
+	tradeType="ORDER_BOARD_TRADE"
+	orderValue="1.103"
+	
+/>
+<order
+	orderId="139720201"
+	clientTransRef="120208234409946"
+	actionIndicator="B"
+	securityId="AGXLN"
+	considerationCurrency="USD"
+	quantity="0.001"
+	quantityMatched="0.001"
+	totalConsideration="1.1"
+	totalCommission="0.01"
+	limit="1101"
+	typeCode="TIL_CANCEL"
+	orderTime="2012-02-08 23:44:14 UTC"
+	goodUntil=""
+	lastModified="2012-02-08 23:44:14 UTC"
+	
+	statusCode="DONE"
+	
+	tradeType="ORDER_BOARD_TRADE"
+	orderValue="1.101"
+	
+/>
+<order
+	orderId="121532315"
+	clientTransRef="36114023"
+	actionIndicator="S"
+	securityId="AUXZU"
+	considerationCurrency="USD"
+	quantity="0.001"
+	quantityMatched="0.001"
+	totalConsideration="48.58"
+	totalCommission="0.39"
+	limit="48000"
+	typeCode="TIL_CANCEL"
+	orderTime="2011-05-20 22:59:46 UTC"
+	goodUntil=""
+	lastModified="2011-05-20 22:59:46 UTC"
+	
+	statusCode="DONE"
+	
+	tradeType="ORDER_BOARD_TRADE"
+	orderValue="48"
+	
+/>
+<order
+	orderId="121446704"
+	clientTransRef="76318495"
+	actionIndicator="B"
+	securityId="AUXZU"
+	considerationCurrency="USD"
+	quantity="0.001"
+	quantityMatched="0.001"
+	totalConsideration="48"
+	totalCommission="0.39"
+	limit="48000"
+	typeCode="TIL_CANCEL"
+	orderTime="2011-05-19 20:35:35 UTC"
+	goodUntil=""
+	lastModified="2011-05-19 20:41:24 UTC"
+	
+	statusCode="DONE"
+	
+	tradeType="ORDER_BOARD_TRADE"
+	orderValue="48"
+	
+/>
+<order
+	orderId="121442549"
+	clientTransRef="75893237"
+	actionIndicator="S"
+	securityId="AUXZU"
+	considerationCurrency="USD"
+	quantity="0.001"
+	quantityMatched="0.001"
+	totalConsideration="48"
+	totalCommission="0.39"
+	limit="48000"
+	typeCode="TIL_CANCEL"
+	orderTime="2011-05-19 19:37:59 UTC"
+	goodUntil=""
+	lastModified="2011-05-19 19:43:02 UTC"
+	
+	statusCode="DONE"
+	
+	tradeType="ORDER_BOARD_TRADE"
+	orderValue="48"
+	
+/>
+</orders>
+			</message>
+		</envelope>

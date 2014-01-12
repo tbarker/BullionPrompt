@@ -1,16 +1,14 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import com.thomasbarker.bullionprompt.model.Order;
+import lombok.Getter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Getter;
-
-import com.thomasbarker.bullionprompt.model.Order;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement( name = "envelope" )
 public final class OrdersMessage

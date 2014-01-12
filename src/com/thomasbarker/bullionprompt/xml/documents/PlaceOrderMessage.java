@@ -1,13 +1,11 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
-import java.math.BigDecimal;
+import com.thomasbarker.bullionprompt.model.Order;
+import lombok.Getter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Getter;
-
-import com.thomasbarker.bullionprompt.model.Order;
+import java.math.BigDecimal;
 
 @XmlRootElement( name = "envelope" )
 public final class PlaceOrderMessage

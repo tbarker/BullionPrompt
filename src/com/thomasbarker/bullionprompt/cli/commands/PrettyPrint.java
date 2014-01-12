@@ -1,55 +1,91 @@
 package com.thomasbarker.bullionprompt.cli.commands;
 
-import java.text.SimpleDateFormat;
+import com.thomasbarker.bullionprompt.model.*;
 
-import com.thomasbarker.bullionprompt.model.Deal;
-import com.thomasbarker.bullionprompt.model.Order;
-import com.thomasbarker.bullionprompt.model.Position;
-import com.thomasbarker.bullionprompt.model.Price;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public final class PrettyPrint {
 
 	final static SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd hh:mm" );
 
 	public static void deal( Deal deal ) {
-		System.out.print( deal.getSecurity() + "\t" );
-		System.out.print( deal.getConsiderationCurrency() + "\t" );
-		System.out.print( deal.getDealTime() + "\t" );
-		System.out.print( deal.getPricePerUnit() + "\t" );
-		System.out.print( deal.getQuantity() + "\n" );
+		tabSeparatedPrint(
+			deal.getSecurity(),
+			deal.getConsiderationCurrency(),
+			deal.getDealTime(),
+			deal.getPricePerUnit(),
+			deal.getQuantity()
+		);
 	}
 
 	public static void price( Price price ) {
-		System.out.print( price.getSecurity() + "\t" );
-		System.out.print( price.getConsiderationCurrency() + "\t" );
-		System.out.print( ( null == price.getActionIndicator() ? "SPOT" : price.getActionIndicator() ) + "\t" );
-		System.out.print( price.getPrice() + "\t" );
-		System.out.print( price.getQuantity() + "\n" );
+		tabSeparatedPrint(
+			price.getSecurity(),
+			price.getConsiderationCurrency(),
+			( null == price.getActionIndicator() ? "SPOT" : price.getActionIndicator() ),
+			price.getPrice(),
+			price.getQuantity()
+		);
 	}
 
 	public static void position( Position position ) {
-		System.out.print( position.getSecurity() + "\t" );
-		System.out.print( position.getTotal() + "\t" );
-		System.out.print( position.getAvailable() + "\t" );
-		System.out.print( position.getValuationCurrency() + "\t" );
-		System.out.print( position.getValuation() + "\t" );
-		System.out.print( position.getNarrative() + "\n" );
+		tabSeparatedPrint(
+			position.getSecurity(),
+			position.getTotal(),
+			position.getAvailable(),
+			position.getValuationCurrency(),
+			position.getValuation(),
+			position.getNarrative()
+		);
+	}
+
+	public static void pendingSettlement( PendingSettlement pendingSettlement ) {
+		tabSeparatedPrint(
+			pendingSettlement.getSecurity(),
+			pendingSettlement.getTotal(),
+			pendingSettlement.getNarrative(),
+			pendingSettlement.getValuation(),
+			pendingSettlement.getValuationCurrency()
+		);
 	}
 
 	public static void order( Order order ) {
-		System.out.print( order.getId() +"\t" );
-		System.out.print( dateFormat.format( order.getTime() ) +"\t" );
-		System.out.print( order.getActionIndicator().name() +"\t" );
-		System.out.print( order.getSecurity().getCode() +"\t" );
-		System.out.print( order.getConsiderationCurrency() +"\t" );
-		System.out.print( order.getQuantity() +"\t" );
-		System.out.print( order.getLimit() +"\t" );
-		System.out.print( order.getStatus().getCode() +"\t" );
-		System.out.print( order.getQuantityMatched() +"\t" );
+		List<Object> stringsToPrint = new ArrayList<Object>();
+
+		stringsToPrint.addAll( Arrays.<Object>asList( new Object[] {
+			order.getId(),
+			dateFormat.format( order.getTime() ),
+			order.getActionIndicator().name(),
+			order.getSecurity().getCode(),
+			order.getConsiderationCurrency(),
+			order.getQuantity(),
+			order.getLimit(),
+			order.getStatus().getCode(),
+			order.getQuantityMatched()
+		} ) );
+
 		if ( null != order.getGoodUntil() ) {
-			System.out.print( dateFormat.format( order.getGoodUntil() ) +"\t" );
+			stringsToPrint.add( dateFormat.format( order.getGoodUntil() ) );
 		}
-		System.out.print( "\n" );
+
+		tabSeparatedPrint( stringsToPrint.toArray() );
 	}
 
+	private static void tabSeparatedPrint( Object ... args ) {
+
+		int count = 0;
+		for( Object arg : args ) {
+			count++;
+			if ( count != args.length ) {
+				System.out.print( arg );
+				System.out.print( '\t' );
+			}
+		}
+
+		System.out.print( args[args.length-1] );
+		System.out.print( '\n' );
+	}
 }

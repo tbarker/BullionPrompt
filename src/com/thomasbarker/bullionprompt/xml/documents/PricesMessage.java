@@ -1,28 +1,20 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import lombok.Data;
-import lombok.Getter;
-
 import com.thomasbarker.bullionprompt.model.Price;
 import com.thomasbarker.bullionprompt.model.enums.ActionIndicator;
 import com.thomasbarker.bullionprompt.model.enums.Security;
 import com.thomasbarker.bullionprompt.xml.adaptors.CurrencyAdaptor;
 import com.thomasbarker.bullionprompt.xml.adaptors.DecimalKilosAsGramsAdaptor;
 import com.thomasbarker.bullionprompt.xml.adaptors.DecimalMoneyAsMinorsAdaptor;
+import lombok.Data;
+import lombok.Getter;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.List;
 
 @XmlRootElement( name = "envelope" )
 public final class PricesMessage
@@ -104,4 +96,5 @@ public final class PricesMessage
 		@XmlJavaTypeAdapter( DecimalMoneyAsMinorsAdaptor.class )
 	    private Long limit;
 	}
+
 }

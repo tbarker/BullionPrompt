@@ -1,12 +1,13 @@
 package com.thomasbarker.bullionprompt.cli.commands;
 
+import com.beust.jcommander.Parameters;
 import com.thomasbarker.bullionprompt.model.Deal;
 import com.thomasbarker.bullionprompt.model.Order;
 import com.thomasbarker.bullionprompt.model.Price;
 import com.thomasbarker.bullionprompt.xmlapi.BVMonitor;
 import com.thomasbarker.bullionprompt.xmlapi.BVMonitor.BVListener;
 
-
+@Parameters( commandDescription = "Monitor the market by polling [every 15 seconds]" )
 public final class WatchAction extends Command {
 
 	@Override
@@ -33,7 +34,6 @@ public final class WatchAction extends Command {
 
 		public void marketPrice( Price price ) {
 			PrettyPrint.price( price );
-			
 		}
 
 		public void deal( Deal deal ) {
