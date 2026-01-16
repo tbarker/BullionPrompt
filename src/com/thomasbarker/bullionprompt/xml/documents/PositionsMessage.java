@@ -1,11 +1,10 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
 import com.thomasbarker.bullionprompt.model.Position;
-import lombok.Getter;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,26 +14,35 @@ public final class PositionsMessage
 	extends AbstractMessageDocument< List<Position> >
 {
 	@XmlElement( name = "message" )
-	@Getter protected Message message;
+	protected Message message;
 
 	public static final class Message extends AbstractMessage
 	{
 		@XmlElement( name = "clientBalance" )
-		@Getter
-		private ClientBalance clientBalance;
+		public ClientBalance clientBalance;
 
-		@Getter protected String requiredType = "CLIENT_BALANCE";
-		@Getter protected BigDecimal requiredVersion = new BigDecimal( "0.2" );
+		@Override
+		protected String getRequiredType() {
+			return "CLIENT_BALANCE";
+		}
+		@Override
+		protected BigDecimal getRequiredVersion() {
+			return new BigDecimal( "0.2" );
+		}
 	}
 
 	public static final class ClientBalance {
 		@XmlElementWrapper( name = "clientPositions" )
 		@XmlElement( name = "clientPosition" )
-		@Getter
-		private List<Position> clientPositions = new ArrayList<Position>();
+		public List<Position> clientPositions = new ArrayList<Position>();
+	}
+
+	public Message getMessage() {
+		return message;
 	}
 
 	public List<Position> getContent() {
-		return getMessage().getClientBalance().getClientPositions();
+		return message.clientBalance.clientPositions;
 	}
+
 }

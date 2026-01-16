@@ -19,17 +19,16 @@ public final class MarketDepth {
 			"actionIndicator=([A-Z])&securityId=([A-Z]+)&considerationCurrency=([A-Z]+)&quantity=([0-9]+\\.[0-9]+)&limit=([0-9]+)"
 		).matcher( document );
 		while ( matchTape.find() ) {
-
 			Price price = new Price();
 			if ( matchTape.group( 1 ).equals( "S" ) ) {
-				price.setActionIndicator( ActionIndicator.SELL );
+				price.actionIndicator = ActionIndicator.SELL;
 			} else if ( matchTape.group( 1 ).equals( "B" ) ) {
-				price.setActionIndicator( ActionIndicator.BUY );
+				price.actionIndicator = ActionIndicator.BUY;
 			}
-			price.setSecurity( Security.valueOf( matchTape.group( 2 ) ) );
-			price.setConsiderationCurrency( Currency.getInstance( matchTape.group( 3 ) ) );
-			price.setQuantity( (long) (1000 * Float.valueOf( matchTape.group( 4 ) )) ); 
-			price.setPrice( Long.valueOf( matchTape.group( 5 ) ) );
+			price.security = Security.valueOf( matchTape.group( 2 ) );
+			price.considerationCurrency = Currency.getInstance( matchTape.group( 3 ) );
+			price.quantity = (long) (1000 * Float.valueOf( matchTape.group( 4 ) ));
+			price.price = Long.valueOf( matchTape.group( 5 ) );
 
 			prices.add( price );
 		}

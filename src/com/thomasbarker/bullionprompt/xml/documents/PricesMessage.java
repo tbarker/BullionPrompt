@@ -6,11 +6,9 @@ import com.thomasbarker.bullionprompt.model.enums.Security;
 import com.thomasbarker.bullionprompt.xml.adaptors.CurrencyAdaptor;
 import com.thomasbarker.bullionprompt.xml.adaptors.DecimalKilosAsGramsAdaptor;
 import com.thomasbarker.bullionprompt.xml.adaptors.DecimalMoneyAsMinorsAdaptor;
-import lombok.Data;
-import lombok.Getter;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Currency;
@@ -20,81 +18,87 @@ import java.util.List;
 public final class PricesMessage
 	extends AbstractMessageDocument< List<Price> >
 {
+	@XmlElement( name = "message" )
+	protected Message message;
+
+	public static final class Message extends AbstractMessage {
+		@XmlElement( name = "market" )
+		public Market market;
+
+		@Override
+		protected String getRequiredType() {
+			return "MARKET_DEPTH";
+		}
+		@Override
+		protected BigDecimal getRequiredVersion() {
+			return new BigDecimal( "0.1" );
+		}
+	}
+
+	@XmlType
+	@XmlAccessorType( XmlAccessType.FIELD )
+	public static final class Market {
+		@XmlElementWrapper( name = "pitches" )
+		@XmlElement( name = "pitch" )
+		public List<Pitch> pitches = new ArrayList<Pitch>();
+	}
+
+	@XmlType
+	@XmlAccessorType( XmlAccessType.FIELD )
+	public static final class Pitch {
+		@XmlAttribute( name = "securityId" ) public Security security;
+		@XmlAttribute
+	    @XmlJavaTypeAdapter( CurrencyAdaptor.class )
+		public Currency considerationCurrency;
+
+		@XmlElementWrapper( name = "buyPrices" )
+		@XmlElement( name = "price" )
+		public List<PriceQuote> buyPrices = new ArrayList<PriceQuote>();
+
+		@XmlElementWrapper( name = "sellPrices" )
+		@XmlElement( name = "price" )
+		public List<PriceQuote> sellPrices = new ArrayList<PriceQuote>();
+	}
+
+	@XmlType
+	@XmlAccessorType( XmlAccessType.FIELD )
+	public static final class PriceQuote {
+		@XmlAttribute public ActionIndicator actionIndicator;
+
+		@XmlAttribute
+	    @XmlJavaTypeAdapter( DecimalKilosAsGramsAdaptor.class )
+	    public Long quantity;
+
+		@XmlAttribute
+		@XmlJavaTypeAdapter( DecimalMoneyAsMinorsAdaptor.class )
+	    public Long limit;
+	}
+
+	public Message getMessage() {
+		return message;
+	}
+
 	public List<Price> getContent() {
 		List<Price> prices = new ArrayList<Price>();
 
-		for( Pitch pitch : getMessage().getMarket().getPitches() ) {
+		for( Pitch pitch : message.market.pitches ) {
 			List<PriceQuote> quotes = new ArrayList<PriceQuote>();
-			quotes.addAll( pitch.getBuyPrices() );
-			quotes.addAll( pitch.getSellPrices() );
+			quotes.addAll( pitch.buyPrices );
+			quotes.addAll( pitch.sellPrices );
 
 			for( PriceQuote quote : quotes ) {
 				Price price = new Price();
-				price.setSecurity( pitch.getSecurity() );
-				price.setPrice( quote.getLimit() );
-				price.setQuantity( quote.getQuantity() );
-				price.setConsiderationCurrency( pitch.getConsiderationCurrency() );
-				price.setActionIndicator( quote.getActionIndicator() );
+				price.security = pitch.security;
+				price.price = quote.limit;
+				price.quantity = quote.quantity;
+				price.considerationCurrency = pitch.considerationCurrency;
+				price.actionIndicator = quote.actionIndicator;
 
 				prices.add( price );
 			}
 		}
 
 		return prices;
-	}
-
-	@XmlElement( name = "message" )
-	@Getter protected Message message;
-
-	public static final class Message extends AbstractMessage {
-
-		@XmlElement( name = "market" )
-		@Getter private Market market;
-
-		@Getter protected String requiredType = "MARKET_DEPTH";
-		@Getter protected BigDecimal requiredVersion = new BigDecimal( "0.1" );
-	}
-
-	@XmlType
-	@XmlAccessorType( XmlAccessType.FIELD )
-	@Data
-	public static final class Market {
-		@XmlElementWrapper( name = "pitches" )
-		@XmlElement( name = "pitch" )
-		private List<Pitch> pitches = new ArrayList<Pitch>();
-	}
-
-	@XmlType
-	@XmlAccessorType( XmlAccessType.FIELD )
-	@Data
-	public static final class Pitch {
-		@XmlAttribute( name = "securityId" ) private Security security;
-		@XmlAttribute
-	    @XmlJavaTypeAdapter( CurrencyAdaptor.class )
-		private Currency considerationCurrency;
-
-		@XmlElementWrapper( name = "buyPrices" )
-		@XmlElement( name = "price" )
-		private List<PriceQuote> buyPrices = new ArrayList<PriceQuote>();
-
-		@XmlElementWrapper( name = "sellPrices" )
-		@XmlElement( name = "price" )
-		private List<PriceQuote> sellPrices = new ArrayList<PriceQuote>();
-	}
-
-	@XmlType
-	@XmlAccessorType( XmlAccessType.FIELD )
-	@Data
-	public static final class PriceQuote {
-		@XmlAttribute private ActionIndicator actionIndicator;
-
-		@XmlAttribute
-	    @XmlJavaTypeAdapter( DecimalKilosAsGramsAdaptor.class )
-	    private Long quantity;
-
-		@XmlAttribute
-		@XmlJavaTypeAdapter( DecimalMoneyAsMinorsAdaptor.class )
-	    private Long limit;
 	}
 
 }

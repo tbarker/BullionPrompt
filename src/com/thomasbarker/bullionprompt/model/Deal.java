@@ -5,37 +5,44 @@ import com.thomasbarker.bullionprompt.xml.adaptors.CurrencyAdaptor;
 import com.thomasbarker.bullionprompt.xml.adaptors.DecimalKilosAsGramsAdaptor;
 import com.thomasbarker.bullionprompt.xml.adaptors.DecimalMoneyAsMinorsAdaptor;
 import com.thomasbarker.bullionprompt.xml.adaptors.TimestampDateAdaptor;
-import lombok.Data;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Currency;
 import java.util.Date;
 
 @XmlRootElement( name = "deal" )
 @XmlAccessorType( XmlAccessType.FIELD )
-@Data
+
 public class Deal {
 
 	@XmlAttribute
 	@XmlJavaTypeAdapter( CurrencyAdaptor.class )
-	private Currency considerationCurrency;
+	public Currency considerationCurrency;
 
-	@XmlAttribute( name = "securityId" ) private Security security;
+	@XmlAttribute( name = "securityId" ) public Security security;
 
 	@XmlAttribute
 	@XmlJavaTypeAdapter( DecimalKilosAsGramsAdaptor.class )
-	private Long quantity;
+	public Long quantity;
 
 	@XmlAttribute
 	@XmlJavaTypeAdapter( DecimalMoneyAsMinorsAdaptor.class )
-	private Long pricePerUnit;
+	public Long pricePerUnit;
 
 	@XmlAttribute
 	@XmlJavaTypeAdapter( TimestampDateAdaptor.class )
-	private Date dealTime;
+	public Date dealTime;public void setConsiderationCurrency(Currency considerationCurrency) {
+		this.considerationCurrency = considerationCurrency;
+	}public void setQuantity(Long quantity) {
+		this.quantity = quantity;
+	}public void setPricePerUnit(Long pricePerUnit) {
+		this.pricePerUnit = pricePerUnit;
+	}public void setDealTime(Date dealTime) {
+		this.dealTime = dealTime;
+	}
 
 }

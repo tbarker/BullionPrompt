@@ -2,7 +2,7 @@ package com.thomasbarker.bullionprompt.xml.adaptors;
 
 import java.math.BigDecimal;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 public abstract class AbstractDecimalAdaptor extends XmlAdapter<BigDecimal, Long>  {
 

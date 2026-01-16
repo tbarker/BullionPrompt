@@ -13,42 +13,42 @@ public final class PrettyPrint {
 
 	public static void deal( Deal deal ) {
 		tabSeparatedPrint(
-			deal.getSecurity(),
-			deal.getConsiderationCurrency(),
-			deal.getDealTime(),
-			deal.getPricePerUnit(),
-			deal.getQuantity()
+			deal.security,
+			deal.considerationCurrency,
+			deal.dealTime,
+			deal.pricePerUnit,
+			deal.quantity
 		);
 	}
 
 	public static void price( Price price ) {
 		tabSeparatedPrint(
-			price.getSecurity(),
-			price.getConsiderationCurrency(),
-			( null == price.getActionIndicator() ? "SPOT" : price.getActionIndicator() ),
-			price.getPrice(),
-			price.getQuantity()
+			price.security,
+			price.considerationCurrency,
+			( null == price.actionIndicator ? "SPOT" : price.actionIndicator ),
+			price.price,
+			price.quantity
 		);
 	}
 
 	public static void position( Position position ) {
 		tabSeparatedPrint(
-			position.getSecurity(),
-			position.getTotal(),
-			position.getAvailable(),
-			position.getValuationCurrency(),
-			position.getValuation(),
-			position.getNarrative()
+			position.security,
+			position.total,
+			position.available,
+			position.valuationCurrency,
+			position.valuation,
+			position.narrative
 		);
 	}
 
 	public static void pendingSettlement( PendingSettlement pendingSettlement ) {
 		tabSeparatedPrint(
-			pendingSettlement.getSecurity(),
-			pendingSettlement.getTotal(),
-			pendingSettlement.getNarrative(),
-			pendingSettlement.getValuation(),
-			pendingSettlement.getValuationCurrency()
+			pendingSettlement.security,
+			pendingSettlement.total,
+			pendingSettlement.narrative,
+			pendingSettlement.valuation,
+			pendingSettlement.valuationCurrency
 		);
 	}
 
@@ -56,19 +56,19 @@ public final class PrettyPrint {
 		List<Object> stringsToPrint = new ArrayList<Object>();
 
 		stringsToPrint.addAll( Arrays.<Object>asList( new Object[] {
-			order.getId(),
-			dateFormat.format( order.getTime() ),
-			order.getActionIndicator().name(),
-			order.getSecurity().getCode(),
-			order.getConsiderationCurrency(),
-			order.getQuantity(),
-			order.getLimit(),
-			order.getStatus().getCode(),
-			order.getQuantityMatched()
+			order.id,
+			dateFormat.format( order.time ),
+			order.actionIndicator.name(),
+			order.security.getCode(),
+			order.considerationCurrency,
+			order.quantity,
+			order.limit,
+			order.status.getCode(),
+			order.quantityMatched
 		} ) );
 
-		if ( null != order.getGoodUntil() ) {
-			stringsToPrint.add( dateFormat.format( order.getGoodUntil() ) );
+		if ( null != order.goodUntil ) {
+			stringsToPrint.add( dateFormat.format( order.goodUntil ) );
 		}
 
 		tabSeparatedPrint( stringsToPrint.toArray() );

@@ -1,16 +1,15 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
-import lombok.Data;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.*;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
+import jakarta.xml.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType( XmlAccessType.FIELD )
-@Data
+
 public abstract class AbstractMessageDocument<T>
 	implements MessageContainer<T>
 {
@@ -18,11 +17,10 @@ public abstract class AbstractMessageDocument<T>
 
 	@XmlRootElement( name = "message" )
 	@XmlAccessorType( XmlAccessType.FIELD )
-    @Data
 	public static abstract class AbstractMessage {
 
-		@XmlAttribute protected String type;
-		@XmlAttribute protected BigDecimal version;
+		@XmlAttribute public String type;
+		@XmlAttribute public BigDecimal version;
 
 		protected abstract String getRequiredType();
 		protected abstract BigDecimal getRequiredVersion();
@@ -40,21 +38,25 @@ public abstract class AbstractMessageDocument<T>
 
 		@XmlElementWrapper( name = "errors" )
 	    @XmlElement( name = "error" )
-	    private List<String> errors = new ArrayList<String>();
+	    public List<String> errors = new ArrayList<String>();
 	}
 
 	@XmlElementWrapper( name = "errors" )
     @XmlElement( name = "error" )
-    private List<String> errors = new ArrayList<String>();
+    public List<String> errors = new ArrayList<String>();
+
+	public List<String> getErrors() {
+		return errors;
+	}
 
 	final void afterUnmarshal( Unmarshaller unmarshaller, Object parent)
 		throws JAXBException
 	{
-		if ( getMessage().getType().endsWith( "_E" ) ) {
-			getErrors().add( "BV API error envelope." );
+		if ( getMessage().type.endsWith( "_E" ) ) {
+			errors.add( "BV API error envelope." );
 		}
 
-		getErrors().addAll( getMessage().getErrors() );
+		errors.addAll( getMessage().errors );
 
 		fixUp();
 	}

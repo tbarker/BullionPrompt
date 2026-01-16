@@ -1,31 +1,40 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
 import com.thomasbarker.bullionprompt.model.Order;
-import lombok.Getter;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 
 @XmlRootElement( name = "envelope" )
 public final class PlaceOrderMessage
 	extends AbstractMessageDocument<Order>
 {
-	public Order getContent() {
-		return getMessage().getOrder();
-	}
-
 	@XmlElement( name = "message" )
-	@Getter private Message message;
+	protected Message message;
 
 	@XmlRootElement( name = "message" )
 	public static final class Message extends AbstractMessage {
-
 		@XmlElement( name = "order" )
-		@Getter private Order order;
+		public Order order;
 
-		@Getter protected String requiredType = "PLACE_ORDER";
-		@Getter protected BigDecimal requiredVersion = new BigDecimal( "0.1" );
+		@Override
+		protected String getRequiredType() {
+			return "PLACE_ORDER";
+		}
+
+		@Override
+		protected BigDecimal getRequiredVersion() {
+			return new BigDecimal( "0.1" );
+		}
+	}
+
+	public Message getMessage() {
+		return message;
+	}
+
+	public Order getContent() {
+		return message.order;
 	}
 
 }

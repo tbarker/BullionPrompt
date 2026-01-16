@@ -3,83 +3,85 @@ package com.thomasbarker.bullionprompt.network;
 import com.thomasbarker.bullionprompt.error.BVWireError;
 import com.thomasbarker.bullionprompt.error.BullionVaultErrors;
 import com.thomasbarker.bullionprompt.xml.documents.MessageContainer;
-import lombok.Cleanup;
-import lombok.RequiredArgsConstructor;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.utils.URIUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
-@RequiredArgsConstructor
+
 @SuppressWarnings("unchecked")
 public class DoMethodGetObject<T> {
 
 	@SuppressWarnings( "rawtypes" )
 	private final Class modelClass;
 
-	public T fetch( HttpClient client, HttpPost method, List<NameValuePair> params ) {
-		UrlEncodedFormEntity entity;
-		try {
-			entity = new UrlEncodedFormEntity( params, "UTF-8" );
-		} catch ( UnsupportedEncodingException uee ) {
-			throw new RuntimeException( uee );
-		}
-		method.setEntity( entity );
-
-		return fetch( client, method );
+	public DoMethodGetObject(Class modelClass) {
+		this.modelClass = modelClass;
 	}
 
-	public T fetch( HttpClient client, String schema, String host, String path, List<NameValuePair> params ) {
-		URI uri;
-		try {
-			uri = URIUtils.createURI(
-				schema, host, -1, path, 
-				URLEncodedUtils.format( params, "UTF-8" ), null
-			);
-		} catch ( URISyntaxException use ) {
-			throw new RuntimeException( use );
-		}
+	/**
+	 * Fetch with POST form data
+	 */
+	public T fetch( HttpClient client, URI uri, Map<String, String> formData ) throws IOException, InterruptedException {
+		String formBody = encodeFormData(formData);
 
-		HttpGet method = new HttpGet( uri );
-		return fetch( client, method );
+		HttpRequest request = HttpRequest.newBuilder()
+			.uri(uri)
+			.header("Content-Type", "application/x-www-form-urlencoded")
+			.POST(HttpRequest.BodyPublishers.ofString(formBody))
+			.build();
+
+		return fetch(client, request);
 	}
 
-	public T fetch( HttpClient client, HttpUriRequest method ) {
-		return fetch( fetchXML( client, method ) );
+	/**
+	 * Fetch with GET request
+	 */
+	public T fetch( HttpClient client, String schema, String host, String path, Map<String, String> params ) throws IOException, InterruptedException {
+		String query = encodeFormData(params);
+		URI uri = URI.create(schema + "://" + host + path + (query.isEmpty() ? "" : "?" + query));
+
+		HttpRequest request = HttpRequest.newBuilder()
+			.uri(uri)
+			.GET()
+			.build();
+
+		return fetch(client, request);
 	}
 
+	/**
+	 * Fetch with HttpRequest
+	 */
+	public T fetch( HttpClient client, HttpRequest request ) throws IOException, InterruptedException {
+		return fetch( fetchXML( client, request ) );
+	}
+
+	/**
+	 * Parse XML document to object
+	 */
 	public T fetch( Document document ) {
-
 		// Map to object
-		JAXBContext context = null;
-		Unmarshaller unmarshaller = null;
-		MessageContainer message = null;
+		JAXBContext context;
+		Unmarshaller unmarshaller;
+		MessageContainer message;
 		try {
 			context = JAXBContext.newInstance( modelClass );
 			unmarshaller = context.createUnmarshaller();
-			unmarshaller.unmarshal( document );
-			message = ( (MessageContainer) unmarshaller.unmarshal( document.getFirstChild() ) );
+			message = ( (MessageContainer) unmarshaller.unmarshal( document ) );
 		} catch ( JAXBException je ) {
 			throw new BVWireError( je );
 		}
@@ -90,35 +92,52 @@ public class DoMethodGetObject<T> {
 		} else {
 			throw new BullionVaultErrors( message.getErrors() );
 		}
-
 	}
 
-	public static Document fetchXML( HttpClient client, HttpUriRequest method ) {
-
+	/**
+	 * Fetch XML document from HTTP request
+	 */
+	public static Document fetchXML( HttpClient client, HttpRequest request ) throws IOException, InterruptedException {
 		try {
+			// Read the response body
+			HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
 
-			// Read the response body.
-			HttpResponse response = client.execute( method );
-			@Cleanup InputStream stream = response.getEntity().getContent();
+			try (InputStream stream = response.body()) {
+				// Parse to XML
+				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+				return dBuilder.parse( stream );
+			}
 
-			// Parse to XML
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document document =  dBuilder.parse( stream );
-
-			return document;
-
-		} catch ( ClientProtocolException cpee ) {
-			throw new BVWireError( cpee );
-		} catch ( IOException ioe ) {
-			throw new BVWireError( ioe );
-		} catch ( IllegalStateException ise ) {
-			throw new BVWireError( ise );
 		} catch ( ParserConfigurationException pce ) {
 			throw new BVWireError( pce );
 		} catch ( SAXException se ) {
 			throw new BVWireError( se );
 		}
+	}
 
+	/**
+	 * URL-encode form data
+	 */
+	private static String encodeFormData(Map<String, String> data) {
+		if (data == null || data.isEmpty()) {
+			return "";
+		}
+
+		StringBuilder result = new StringBuilder();
+		boolean first = true;
+
+		for (Map.Entry<String, String> entry : data.entrySet()) {
+			if (first) {
+				first = false;
+			} else {
+				result.append("&");
+			}
+			result.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8));
+			result.append("=");
+			result.append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8));
+		}
+
+		return result.toString();
 	}
 }

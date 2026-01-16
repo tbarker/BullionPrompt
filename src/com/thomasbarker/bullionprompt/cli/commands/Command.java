@@ -2,27 +2,29 @@ package com.thomasbarker.bullionprompt.cli.commands;
 
 import com.beust.jcommander.Parameter;
 import com.thomasbarker.bullionprompt.xmlapi.BVSession;
-import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 
 public abstract class Command {
+
+	private static final Logger logger = LoggerFactory.getLogger(Command.class);
 
 	protected BVSession session;
 
 	final SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd hh:mm" );
 
 	@Parameter( names = "--wire", required = false, hidden = true )
-	@Getter private boolean wire = false;
-	
+	private boolean wire = false;
+
 	public void start() {
 
 		// Enable debug wire logging if requested
-		// These system parameters must be set before initialising the session
+		// Set SLF4J logging level for Apache HTTP client
 		if ( isWire() ) {
-			System.setProperty( "org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog" );
-			System.setProperty( "org.apache.commons.logging.simplelog.showdatetime", "true" );
-			System.setProperty( "org.apache.commons.logging.simplelog.log.org.apache.http", "DEBUG" );
+			System.setProperty( "org.slf4j.simpleLogger.log.org.apache.http", "debug" );
+			logger.debug("Wire logging enabled for HTTP client");
 		}
 
 		session = new BVSession();
@@ -30,4 +32,8 @@ public abstract class Command {
 	}
 
 	public abstract void execute();
+
+	public boolean isWire() {
+		return wire;
+	}
 }

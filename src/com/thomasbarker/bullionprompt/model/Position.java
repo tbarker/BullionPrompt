@@ -4,37 +4,30 @@ import com.thomasbarker.bullionprompt.model.enums.Security;
 import com.thomasbarker.bullionprompt.xml.adaptors.CurrencyAdaptor;
 import com.thomasbarker.bullionprompt.xml.adaptors.DecimalKilosAsGramsAdaptor;
 import com.thomasbarker.bullionprompt.xml.adaptors.DecimalMoneyAsMinorsAdaptor;
-import lombok.Data;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Currency;
 
 @XmlRootElement( name = "clientPosition" )
 @XmlAccessorType( XmlAccessType.FIELD )
-@Data
+
 public final class Position {
 
 	@XmlAttribute
 	@XmlJavaTypeAdapter( DecimalKilosAsGramsAdaptor.class )
-	private Long available;
+	public Long available;
 	@XmlAttribute( name = "classNarrative" ) public String narrative;
-	@XmlAttribute( name = "securityId" ) private Security security;
+	@XmlAttribute( name = "securityId" ) public Security security;
 	@XmlAttribute
 	@XmlJavaTypeAdapter( DecimalKilosAsGramsAdaptor.class )
-	private Long total;
+	public Long total;
 	@XmlAttribute( name = "totalValuation" )
 	@XmlJavaTypeAdapter( DecimalMoneyAsMinorsAdaptor.class )
-	private Long valuation;
+	public Long valuation;
 	@XmlAttribute
 	@XmlJavaTypeAdapter( CurrencyAdaptor.class )
-	private Currency valuationCurrency;
-
-	public Long getValuation() {
-		return this.valuation * ( "CURRENCY".equals( narrative ) ? 10 : 1 );
-	}
-
-}
+	public Currency valuationCurrency;}

@@ -1,10 +1,9 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
 import com.thomasbarker.bullionprompt.model.Order;
-import lombok.Getter;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 
 @XmlRootElement( name = "envelope" )
@@ -12,29 +11,39 @@ public final class SingleOrderMessage
 	extends AbstractMessageDocument<Order>
 {
 	public Order getContent() {
-		return getMessage().getOrder();
+		return message.order;
 	}
 
 	@XmlElement( name = "message" )
-	@Getter private Message message;
+	protected Message message;
 
 	@XmlRootElement( name = "message" )
 	public static final class Message extends AbstractMessage {
-
 		@XmlElement( name = "order" )
-		@Getter private Order order;
+		public Order order;
 
-		@Getter protected String requiredType = "SINGLE_ORDER";
-		@Getter protected BigDecimal requiredVersion = new BigDecimal( "0.1" );
+		@Override
+		protected String getRequiredType() {
+			return "SINGLE_ORDER";
+		}
+		@Override
+		protected BigDecimal getRequiredVersion() {
+			return new BigDecimal( "0.1" );
+		}
 	}
 
 	@XmlElement( name = "cancellable" )
 	// This ought to be a Boolean but JAXB would not co-operate
-	@Getter private String cancellable;
+	public String cancellable;
+
+	public Message getMessage() {
+		return message;
+	}
 
 	@Override
 	protected final void fixUp()
 	{
-		getMessage().getOrder().setCancellable( Boolean.valueOf( this.cancellable ) );
+		message.order.cancellable = Boolean.valueOf( this.cancellable );
 	}
+
 }

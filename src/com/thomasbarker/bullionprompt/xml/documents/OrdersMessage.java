@@ -1,11 +1,10 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
 import com.thomasbarker.bullionprompt.model.Order;
-import lombok.Getter;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +14,30 @@ public final class OrdersMessage
 	extends AbstractMessageDocument< List<Order> >
 {
 	@XmlElement( name = "message" )
-	@Getter protected Message message;
+	protected Message message;
 
 	public static final class Message extends AbstractMessage
 	{
 		@XmlElementWrapper( name = "orders" )
 	    @XmlElement( name = "order" )
-		@Getter
-		private List<Order> orders = new ArrayList<Order>();
+		public List<Order> orders = new ArrayList<Order>();
 
-		@Getter protected String requiredType = "ORDERS";
-		@Getter protected BigDecimal requiredVersion = new BigDecimal( "0.4" );
+		@Override
+		protected String getRequiredType() {
+			return "ORDERS";
+		}
+		@Override
+		protected BigDecimal getRequiredVersion() {
+			return new BigDecimal( "0.4" );
+		}
+	}
+
+	public Message getMessage() {
+		return message;
 	}
 
 	public List<Order> getContent() {
-		return getMessage().getOrders();
+		return message.orders;
 	}
 
 }

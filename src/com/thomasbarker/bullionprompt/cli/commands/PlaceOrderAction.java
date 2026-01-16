@@ -4,7 +4,6 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.Random;
 
-import lombok.Getter;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -30,13 +29,13 @@ public final class PlaceOrderAction
 		converter = ActionIndicatorParameterConverter.class,
 		required = true
 	)
-	@Getter public ActionIndicator actionIndicator;
+	public ActionIndicator actionIndicator;
 
 	@Parameter( names = { "--ref", "-r" }, required = false, description = "Your reference code. Must be unique for this account." )
-	@Getter public String clientTransRef = Integer.toString( new Random( System.nanoTime() ).nextInt( 99999999 ) );
+	public String clientTransRef = Integer.toString( new Random( System.nanoTime() ).nextInt( 99999999 ) );
 
 	@Parameter( names = { "--currency", "-c" }, converter = CurrencyParameterConverter.class, required = true )
-	@Getter public Currency considerationCurrency;
+	public Currency considerationCurrency;
 
 	@Parameter(
 		names = { "--goodUntil", "-g" },
@@ -44,16 +43,16 @@ public final class PlaceOrderAction
 		converter = DateParameterConverter.class,
 		required = false
 	)
-	@Getter public Date goodUntil;
+	public Date goodUntil;
 
 	@Parameter( names = { "--limit", "-l" }, description = "Price in cents/pence", required = true )
-	@Getter public Long limit;
+	public Long limit;
 
 	@Parameter( names = { "--quantity", "-q" }, description = "In grams", required = true )
-	@Getter public Long quantity;
+	public Long quantity;
 
 	@Parameter( names = { "--security", "-s" }, required = true, converter = SecurityParameterConverter.class )
-	@Getter public Security security;
+	public Security security;
 
 	@Parameter(
 		names = { "--type", "-t" },
@@ -61,12 +60,22 @@ public final class PlaceOrderAction
 		required = true,
 		converter = OrderTypeParameterConverter.class
 	)
-	@Getter public OrderType type;
+	public OrderType type;
 
 	@Override
 	protected void perform() {
 		Order order = session.placeOrder( this );
-		System.out.println( order.getId() + "\t" + order.getStatus() + "\t" + order.getQuantityMatched() );
+		System.out.println( order.id + "\t" + order.status + "\t" + order.quantityMatched );
 	}
+
+	// PlaceOrder interface implementation
+	public ActionIndicator getActionIndicator() { return actionIndicator; }
+	public Currency getConsiderationCurrency() { return considerationCurrency; }
+	public Security getSecurity() { return security; }
+	public Long getLimit() { return limit; }
+	public Date getGoodUntil() { return goodUntil; }
+	public Long getQuantity() { return quantity; }
+	public OrderType getType() { return type; }
+	public String getClientTransRef() { return clientTransRef; }
 
 }

@@ -5,18 +5,15 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import com.thomasbarker.bullionprompt.model.Price;
 import com.thomasbarker.bullionprompt.model.enums.Security;
@@ -33,39 +30,52 @@ public final class SpotPriceMessage
 {
 
 	@XmlElement( name = "message" )
-	@Getter protected Message message;
+	protected Message message;
 
 	@XmlType
 	public static final class Message extends AbstractMessage {
 
 		@XmlElement( name = "point" )
 		@XmlElementWrapper( name = "points" )
-		@Getter private List<Point> points;
+		public List<Point> points;
 
-		@Getter protected String requiredType = "CHART_LINE_A";
-		@Getter protected BigDecimal requiredVersion = new BigDecimal( "0.4" );
+		@Override
+		protected String getRequiredType() {
+			return "CHART_LINE_A";
+		}
+		@Override
+		protected BigDecimal getRequiredVersion() {
+			return new BigDecimal( "0.4" );
+		}
 
 		@XmlAttribute( name = "securityId" )
-		@Getter
-		private Security security;
+		public Security security;
 
 		@XmlAttribute( name = "currency" )
 	    @XmlJavaTypeAdapter( CurrencyAdaptor.class )
-		@Getter
-		private Currency considerationCurrency;
+		public Currency considerationCurrency;
+	}
+
+	@XmlType
+	public static class Point {
+		@XmlJavaTypeAdapter( DecimalMoneyAsMinorsAdaptor.class )
+		public Long price;
+	}
+
+	public Message getMessage() {
+		return message;
 	}
 
 	public List<Price> getContent() {
 		List<Price> prices = new ArrayList<Price>();
 
-		for( Point point : getMessage().getPoints() ) {
-
-			if ( null == point.getPrice() ) { continue; }
+		for( Point point : message.points ) {
+			if ( null == point.price ) { continue; }
 
 			Price price = new Price();
-			price.setSecurity( getMessage().getSecurity() );
-			price.setPrice( point.getPrice() );
-			price.setConsiderationCurrency( getMessage().getConsiderationCurrency() );
+			price.security = message.security;
+			price.price = point.price;
+			price.considerationCurrency = message.considerationCurrency;
 
 			prices.add( price );
 		}
@@ -73,10 +83,4 @@ public final class SpotPriceMessage
 		return prices;
 	}
 
-	@XmlType
-	private static class Point {
-
-		@XmlJavaTypeAdapter( DecimalMoneyAsMinorsAdaptor.class )
-		@Getter private Long price;
-	}
 }

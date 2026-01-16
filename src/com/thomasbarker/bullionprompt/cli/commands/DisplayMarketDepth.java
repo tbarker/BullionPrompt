@@ -2,7 +2,6 @@ package com.thomasbarker.bullionprompt.cli.commands;
 
 import java.util.Currency;
 
-import lombok.Getter;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -15,10 +14,10 @@ import com.thomasbarker.bullionprompt.model.enums.Security;
 public final class DisplayMarketDepth extends Command {
 
 	@Parameter( names = { "--currency", "-c" }, required = false, converter = CurrencyParameterConverter.class )
-	@Getter Currency considerationCurrency;
+	Currency considerationCurrency;
 
 	@Parameter( names = { "--security", "-s" }, required = false, converter = SecurityParameterConverter.class )
-	@Getter Security security;
+	Security security;
 
 	@Override
 	public void execute() {
