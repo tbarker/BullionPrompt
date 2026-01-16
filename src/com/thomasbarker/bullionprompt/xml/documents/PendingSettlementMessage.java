@@ -1,6 +1,6 @@
 package com.thomasbarker.bullionprompt.xml.documents;
 
-import com.thomasbarker.bullionprompt.model.Position;
+import com.thomasbarker.bullionprompt.model.PendingSettlement;
 import lombok.Getter;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement( name = "envelope" )
-public final class PositionsMessage
-	extends AbstractMessageDocument< List<Position> >
+public final class PendingSettlementMessage
+	extends AbstractMessageDocument< List<PendingSettlement> >
 {
 	@XmlElement( name = "message" )
 	@Getter protected Message message;
@@ -28,13 +28,13 @@ public final class PositionsMessage
 	}
 
 	public static final class ClientBalance {
-		@XmlElementWrapper( name = "clientPositions" )
-		@XmlElement( name = "clientPosition" )
+		@XmlElementWrapper( name = "pendingSettlements" )
+		@XmlElement( name = "pendingSettlement" )
 		@Getter
-		private List<Position> clientPositions = new ArrayList<Position>();
+		private List<PendingSettlement> pendingSettlements = new ArrayList<PendingSettlement>();
 	}
 
-	public List<Position> getContent() {
-		return getMessage().getClientBalance().getClientPositions();
+	public List<PendingSettlement> getContent() {
+		return getMessage().getClientBalance().getPendingSettlements();
 	}
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<envelope>
+    <message type="CLIENT_BALANCE_A" version="0.2">
+        <clientBalance>
+            <pendingSettlements>
+                <pendingSettlement securityId="AUXZU" total="2.229" classNarrative="GOLD" totalValuation="87844.89" valuationCurrency="USD">
+                    <pendingTransfers>
+                        <pendingTransfer type="OFF_MARKET_TRADE" lowestLedger="UNS_DIS" balance="-0.150" dueDate="2012-10-18 00:00:00 UTC" valuation="-59115" valuationCurrency="USD"/>
+                    </pendingTransfers>
+                </pendingSettlement>
+            </pendingSettlements>
+        </clientBalance>
+    </message>
+</envelope>

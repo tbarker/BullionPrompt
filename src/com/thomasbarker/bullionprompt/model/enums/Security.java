@@ -12,6 +12,7 @@ public enum Security {
     AUXSG( "AUXSG", "Singapore Gold", SecurityClass.GOLD ),
     AGXZU( "AGXZU", "Zurich Silver", SecurityClass.SILVER ),
     AGXLN( "AGXLN", "London Silver", SecurityClass.SILVER ),
+    AGXTR( "AGXTR", "Toronto Silver", SecurityClass.SILVER ),
     AGXSG( "AGXSG", "Singapore Silver", SecurityClass.SILVER ),
     EUR( "EUR", "Euro", SecurityClass.CURRENCY ),
     USD( "USD", "US Dollar", SecurityClass.CURRENCY ),
@@ -37,6 +38,10 @@ public enum Security {
 
     public SecurityClass getSecurityClass() {
     	return this.securityClass;
+    }
+
+    public static Security[] bullionValues() {
+        return new Security[] { AUXZU, AUXLN, AUXNY, AUXTR, AUXSG, AGXZU, AGXLN, AGXTR, AGXSG };
     }
 
     @XmlEnum

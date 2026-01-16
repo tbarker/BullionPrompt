@@ -44,8 +44,8 @@
 		<mkdir dir="${basedir}/build" />
 		<mkdir dir="${basedir}/build/classes" />
 		<mkdir dir="${basedir}/build/test" />
-		<javac srcdir="src" destdir="build/classes" classpathref="classpath.compile" source="1.5" includeantruntime="false" />
-		<javac srcdir="${basedir}/test" destdir="build/test" classpathref="classpath.test" source="1.5"	includeantruntime="false" />
+		<javac srcdir="src" destdir="build/classes" classpathref="classpath.compile" source="1.8" target="1.8" includeantruntime="false" />
+		<javac srcdir="${basedir}/test" destdir="build/test" classpathref="classpath.test" source="1.8" target="1.8" includeantruntime="false" />
 		<copy todir="${basedir}/build/classes">
 			<fileset dir="${basedir}/src">
 				<include name="**/*.xml" />
